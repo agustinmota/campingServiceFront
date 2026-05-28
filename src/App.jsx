@@ -1,10 +1,9 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { BedDouble, CalendarDays, Home, LogOut, Tent, UsersRound, Waves } from "lucide-react";
+import { BedDouble, CalendarDays, LogOut, Tent, UsersRound, Waves } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectAuthUser } from "./features/auth/authSlice";
 
 const navItems = [
-  { to: "/app", label: "Inicio", icon: Home, end: true, roles: ["admin", "user"] },
   { to: "/app/dashboard", label: "Panel", icon: Waves, roles: ["admin"] },
   { to: "/app/cabins", label: "Cabanas", icon: BedDouble, roles: ["admin", "user"] },
   { to: "/app/campsites", label: "Parcelas", icon: Tent, roles: ["admin", "user"] },

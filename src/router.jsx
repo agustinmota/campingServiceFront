@@ -8,9 +8,10 @@ import { CabinsPage } from "./features/cabins/CabinsPage";
 import { CampsitesPage } from "./features/campsites/CampsitesPage";
 import { GuestsPage } from "./features/guests/GuestsPage";
 import { BookingsPage } from "./features/bookings/BookingsPage";
+import { ReservationPage } from "./features/reservations/ReservationPage";
 import { ProtectedRoute } from "./shared/ProtectedRoute";
 import { RoleRoute } from "./shared/RoleRoute";
-import { UserHomePage } from "./features/user/UserHomePage";
+import { AppIndexRedirect } from "./shared/AppIndexRedirect";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <UserHomePage /> },
+      { index: true, element: <AppIndexRedirect /> },
       {
         path: "dashboard",
         element: (
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
         )
       },
       { path: "cabins", element: <CabinsPage /> },
+      { path: "reserve/:type/:id", element: <ReservationPage /> },
       { path: "campsites", element: <CampsitesPage /> },
       {
         path: "guests",

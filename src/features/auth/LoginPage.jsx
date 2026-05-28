@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ShieldCheck, LockKeyhole, Mail, Waves } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectAuthToken } from "./authSlice";
@@ -7,14 +7,16 @@ import { login, logout, selectAuthToken } from "./authSlice";
 export function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const token = useSelector(selectAuthToken);
   const status = useSelector((state) => state.auth.status);
   const error = useSelector((state) => state.auth.error);
   const [form, setForm] = useState({ email: "", password: "" });
   const [roleError, setRoleError] = useState(null);
+  const redirectTo = location.state?.from?.pathname || "/";
 
   if (token) {
-    return <Navigate to="/app" replace />;
+    return <Navigate to={redirectTo} replace />;
   }
 
   const handleChange = (event) => {
@@ -27,7 +29,7 @@ export function LoginPage() {
     setRoleError(null);
     const result = await dispatch(login(form));
     if (login.fulfilled.match(result)) {
-      navigate("/app");
+      navigate(redirectTo, { replace: true });
     }
   };
 

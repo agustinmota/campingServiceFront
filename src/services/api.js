@@ -1,28 +1,34 @@
+import axios from "axios";
+
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-export async function apiRequest(path, options = {}) {
-  const token = localStorage.getItem("camping_token");
-  const headers = {
-    "Content-Type": "application/json",
-    ...options.headers
-  };
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+export const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    "Content-Type": "application/json"
   }
+});
 
-  const response = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers
-  });
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("camping_token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
-  const contentType = response.headers.get("content-type") || "";
-  const data = contentType.includes("application/json") ? await response.json() : await response.text();
-
-  if (!response.ok) {
-    const message = typeof data === "string" ? data : data.message || data.error || "Error en la solicitud";
+export async function apiRequest(path, options = {}) {
+  try {
+    const response = await api.request({
+      url: path,
+      method: options.method || "GET",
+      data: options.body ? JSON.parse(options.body) : options.data,
+      headers: options.headers
+    });
+    return response.data;
+  } catch (error) {
+    const data = error.response?.data;
+    const message = typeof data === "string" ? data : data?.message || data?.error || error.message || "Error en la solicitud";
     throw new Error(message);
   }
-
-  return data;
 }
