@@ -4,12 +4,19 @@
 
 @layer base {
   :root {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    @apply bg-forest-50 text-ink;
+    font-family: Raleway, ui-sans-serif, system-ui, sans-serif;
+    @apply bg-parch text-ink;
+  }
+
+  html {
+    @apply scroll-smooth;
   }
 
   body {
-    @apply m-0 min-w-80 bg-forest-50;
+    @apply m-0 min-w-80 bg-parch text-ink;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(212, 170, 90, 0.14), transparent 32rem),
+      linear-gradient(180deg, #f7f2e9 0%, #ede7dc 100%);
   }
 
   button,
@@ -28,22 +35,31 @@
     @apply m-0;
   }
 
+  h1,
+  h2 {
+    @apply font-serif text-ink;
+  }
+
   h1 {
-    @apply text-3xl leading-tight;
+    @apply text-4xl leading-tight;
   }
 
   h2 {
-    @apply text-lg;
+    @apply text-2xl;
   }
 }
 
 @layer components {
   .shell {
-    @apply grid min-h-screen grid-cols-[260px_minmax(0,1fr)];
+    @apply grid min-h-screen grid-cols-[280px_minmax(0,1fr)] bg-parch;
   }
 
   .sidebar {
-    @apply flex flex-col gap-6 bg-forest-900 p-6 text-white;
+    @apply sticky top-0 flex h-screen flex-col gap-8 bg-forest-800 p-7 text-cream;
+    background:
+      linear-gradient(180deg, rgba(20, 48, 31, 0.98), rgba(14, 28, 19, 0.98)),
+      url("/img/background.jpg") center/cover;
+    box-shadow: 18px 0 50px rgba(14, 28, 19, 0.24);
   }
 
   .brand,
@@ -51,13 +67,23 @@
     @apply flex items-center gap-3;
   }
 
+  .brand svg,
+  .login-brand svg {
+    @apply text-gilded;
+  }
+
   .brand strong,
   .brand span {
     @apply block;
   }
 
+  .brand strong,
+  .public-brand strong {
+    @apply font-serif text-2xl font-semibold leading-none;
+  }
+
   .brand span {
-    @apply mt-1 text-sm text-[#c8d8cf];
+    @apply mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#d8c8a8];
   }
 
   .nav {
@@ -69,21 +95,21 @@
   .primary-button,
   .secondary-button,
   .icon-button {
-    @apply inline-flex items-center justify-center gap-2.5 rounded-lg border-0 no-underline transition;
+    @apply inline-flex items-center justify-center gap-2.5 rounded-none border-0 no-underline transition duration-200;
   }
 
   .nav a {
-    @apply min-h-11 justify-start px-3 text-[#e7eee9];
+    @apply min-h-12 justify-start border border-transparent px-4 text-sm font-bold uppercase tracking-[0.14em] text-cream;
   }
 
   .nav a.active,
   .nav a:hover,
   .ghost-button:hover {
-    @apply bg-forest-700;
+    @apply border-gold bg-white/10 text-gilded;
   }
 
   .ghost-button {
-    @apply mt-auto min-h-11 justify-start bg-transparent px-3 text-[#e7eee9];
+    @apply mt-auto min-h-12 justify-start border border-white/15 bg-transparent px-4 text-sm font-bold uppercase tracking-[0.14em] text-cream;
   }
 
   .content {
@@ -91,51 +117,52 @@
   }
 
   .page {
-    @apply grid gap-6;
+    @apply grid gap-7;
   }
 
   .page-header {
-    @apply flex items-center justify-between gap-4;
+    @apply flex items-center justify-between gap-4 border-b border-gold/30 pb-5;
   }
 
   .page-header p,
   .login-brand p {
-    @apply mt-1.5 text-[#607068];
+    @apply mt-2 text-sm font-medium uppercase tracking-[0.16em] text-muted;
   }
 
   .stats-grid {
-    @apply grid grid-cols-4 gap-4;
+    @apply grid grid-cols-4 gap-5;
   }
 
   .stat-card,
   .panel,
   .table-wrap,
   .login-panel {
-    @apply rounded-lg border border-forest-200 bg-white shadow-soft;
+    @apply border border-gold/25 bg-[#f8f3ea] shadow-soft;
   }
 
   .stat-card {
-    @apply grid gap-2.5 p-5;
+    @apply grid gap-3 p-6;
+    background: linear-gradient(180deg, #fbf7ef 0%, #efe5d6 100%);
   }
 
   .stat-card svg {
-    @apply text-forest-500;
+    @apply text-gold;
   }
 
   .stat-card span {
-    @apply text-[#607068];
+    @apply text-xs font-bold uppercase tracking-[0.18em] text-muted;
   }
 
   .stat-card strong {
-    @apply text-4xl;
+    @apply font-display text-5xl font-semibold text-forest-800;
   }
 
   .work-grid {
-    @apply grid grid-cols-[minmax(260px,360px)_minmax(0,1fr)] items-start gap-5;
+    @apply grid grid-cols-[minmax(260px,360px)_minmax(0,1fr)] items-start gap-6;
   }
 
   .booking-home-grid {
-    @apply grid grid-cols-[minmax(280px,420px)_minmax(0,1fr)] items-start gap-5;
+    @apply grid grid-cols-[minmax(280px,420px)_minmax(0,1fr)] items-start gap-6;
   }
 
   .form {
@@ -143,50 +170,54 @@
   }
 
   .compact-form {
-    @apply p-5;
+    @apply p-6;
+  }
+
+  .form h2 {
+    @apply border-b border-gold/20 pb-3 text-2xl;
   }
 
   .form label {
-    @apply grid gap-2 font-semibold text-[#405049];
+    @apply grid gap-2 text-xs font-bold uppercase tracking-[0.14em] text-forest-800;
   }
 
   .form input,
   .form select,
   .input-shell {
-    @apply min-h-11 w-full rounded-md border border-forest-300 bg-white;
+    @apply min-h-12 w-full rounded-none border border-gold/35 bg-[#fffaf2];
   }
 
   .form input,
   .form select {
-    @apply px-3 text-ink;
+    @apply px-3 text-sm font-semibold text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/20;
   }
 
   .input-shell {
-    @apply flex items-center gap-2.5 px-3;
+    @apply flex items-center gap-2.5 px-3 text-gold;
   }
 
   .input-shell input {
-    @apply min-h-10 border-0 p-0 outline-none;
+    @apply min-h-10 border-0 bg-transparent p-0 outline-none focus:ring-0;
   }
 
   .primary-button {
-    @apply min-h-11 bg-forest-500 px-4 font-bold text-white hover:bg-forest-600 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply min-h-12 bg-gold px-5 text-xs font-extrabold uppercase tracking-[0.16em] text-forest-900 hover:bg-gilded disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .secondary-button {
-    @apply min-h-11 bg-forest-100 px-4 font-bold text-forest-800 hover:bg-[#d7e5dc];
+    @apply min-h-12 border border-gold/55 bg-transparent px-5 text-xs font-extrabold uppercase tracking-[0.16em] text-forest-800 hover:bg-gold hover:text-forest-900;
   }
 
   .text-link {
-    @apply text-center font-bold text-forest-500 no-underline;
+    @apply text-center text-xs font-extrabold uppercase tracking-[0.16em] text-gold no-underline hover:text-forest-800;
   }
 
   .icon-button {
-    @apply h-10 w-10 bg-forest-100 text-forest-800 hover:bg-[#d7e5dc];
+    @apply h-11 w-11 border border-gold/35 bg-[#fbf7ef] text-forest-800 hover:bg-gold hover:text-forest-900;
   }
 
   .icon-button.danger {
-    @apply bg-[#f7e5e3] text-[#8b2f2f];
+    @apply border-[#9c4640]/30 bg-[#f5ded7] text-[#8b2f2f] hover:bg-[#e5b8ac];
   }
 
   .table-wrap {
@@ -194,7 +225,7 @@
   }
 
   .resource-thumb {
-    @apply block h-14 w-24 rounded-md bg-forest-100 object-cover;
+    @apply block h-16 w-28 bg-forest-100 object-cover;
   }
 
   .user-home-stack {
@@ -202,11 +233,11 @@
   }
 
   .stay-card-grid {
-    @apply grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5;
+    @apply grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-4;
   }
 
   .stay-card {
-    @apply overflow-hidden rounded-lg border border-forest-200 bg-white shadow-soft;
+    @apply overflow-hidden border border-gold/25 bg-[#fbf7ef] shadow-soft;
   }
 
   .stay-card img {
@@ -214,28 +245,32 @@
   }
 
   .stay-card div {
-    @apply grid gap-1.5 p-3;
+    @apply grid gap-1.5 p-4;
   }
 
   .stay-card p {
-    @apply text-sm leading-snug text-[#405049];
+    @apply text-sm leading-relaxed text-muted;
   }
 
   .stay-card span {
-    @apply text-sm text-[#607068];
+    @apply text-xs font-bold uppercase tracking-[0.14em] text-gold;
   }
 
   table {
-    @apply w-full min-w-[640px] border-collapse;
+    @apply w-full min-w-[640px] border-collapse bg-[#fbf7ef];
   }
 
   th,
   td {
-    @apply border-b border-[#edf1ee] px-4 py-3.5 text-left;
+    @apply border-b border-gold/20 px-4 py-4 text-left;
   }
 
   th {
-    @apply bg-[#f8faf7] text-sm font-bold text-[#596b61];
+    @apply bg-forest-800 text-xs font-bold uppercase tracking-[0.14em] text-cream;
+  }
+
+  td {
+    @apply text-sm font-semibold text-ink;
   }
 
   .actions-cell {
@@ -243,43 +278,51 @@
   }
 
   .state-text {
-    @apply px-4 py-3.5 text-[#65756d];
+    @apply px-4 py-4 text-sm font-semibold text-muted;
   }
 
   .error {
-    @apply p-0 font-bold text-[#a33838];
+    @apply p-0 text-sm font-bold text-[#9c3434];
   }
 
   .login-page {
-    @apply grid min-h-screen place-items-center bg-gradient-to-br from-[#eff5ec] via-[#dbe9e1] to-[#cfded6] p-6;
+    @apply grid min-h-screen place-items-center bg-cover bg-center p-6;
+    background-image:
+      linear-gradient(90deg, rgba(14, 28, 19, 0.84), rgba(20, 48, 31, 0.42)),
+      url("/img/background.jpg");
   }
 
   .login-panel {
-    @apply w-full max-w-[440px] p-7;
+    @apply w-full max-w-[460px] p-8;
+    background: rgba(242, 237, 228, 0.93);
+    backdrop-filter: blur(16px);
   }
 
   .login-brand {
-    @apply mb-7;
-  }
-
-  .login-brand svg {
-    @apply text-forest-500;
+    @apply mb-7 border-b border-gold/30 pb-5;
   }
 
   .login-brand h1 {
-    @apply text-3xl;
+    @apply text-4xl;
   }
 
   .public-page {
-    @apply min-h-screen bg-forest-50;
+    @apply min-h-screen bg-parch;
   }
 
   .public-nav {
-    @apply flex items-center justify-between gap-4 px-8 py-4;
+    @apply fixed left-0 right-0 top-0 z-30 flex items-center justify-between gap-4 px-8 py-5 text-cream;
+    background: rgba(14, 28, 19, 0.78);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 8px 30px rgba(14, 28, 19, 0.2);
   }
 
   .public-brand {
-    @apply text-forest-900;
+    @apply text-cream;
+  }
+
+  .public-brand strong {
+    @apply text-cream;
   }
 
   .public-nav nav,
@@ -287,23 +330,27 @@
     @apply flex flex-wrap gap-2.5;
   }
 
+  .public-nav .secondary-button {
+    @apply border-white/20 text-cream hover:border-gold hover:bg-gold hover:text-forest-900;
+  }
+
   .public-hero {
-    @apply grid min-h-[52vh] items-center bg-cover bg-center px-8 py-12 text-white;
+    @apply grid min-h-[86vh] items-center bg-cover bg-center px-8 pb-24 pt-32 text-cream;
     background-image:
-      linear-gradient(90deg, rgba(31, 61, 50, 0.92), rgba(31, 61, 50, 0.45)),
-      url("https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1600&q=80");
+      linear-gradient(90deg, rgba(14, 28, 19, 0.86), rgba(14, 28, 19, 0.42), rgba(14, 28, 19, 0.18)),
+      url("/img/background.jpg");
   }
 
   .public-hero > div {
-    @apply w-full max-w-[680px];
+    @apply w-full max-w-[780px];
   }
 
   .public-hero h1 {
-    @apply text-5xl;
+    @apply font-display text-7xl font-semibold leading-none text-cream;
   }
 
   .public-hero p {
-    @apply my-4 max-w-xl text-lg text-[#edf5ef];
+    @apply my-6 max-w-xl text-lg font-medium leading-8 text-[#f4ead7];
   }
 
   .public-strip,
@@ -314,23 +361,23 @@
   .public-strip article,
   .quick-card,
   .readonly-panel {
-    @apply rounded-lg border border-forest-200 bg-white shadow-soft;
+    @apply border border-gold/25 bg-[#fbf7ef] shadow-soft;
   }
 
   .public-strip article,
   .quick-card {
-    @apply grid gap-2 p-4 text-ink no-underline;
+    @apply grid gap-2 p-5 text-ink no-underline;
   }
 
   .public-strip svg,
   .quick-card svg {
-    @apply text-forest-500;
+    @apply text-gold;
   }
 
   .public-strip span,
   .quick-card span,
   .readonly-panel p {
-    @apply text-[#607068];
+    @apply text-sm leading-relaxed text-muted;
   }
 
   .quick-grid {
@@ -338,64 +385,79 @@
   }
 
   .readonly-panel {
-    @apply grid gap-2 p-5;
+    @apply grid gap-2 p-6;
   }
 
   .public-cabins-section {
-    @apply grid gap-5 px-8 pb-10 pt-7;
+    @apply grid gap-7 px-8 pb-12 pt-10;
+  }
+
+  #cabins {
+    @apply relative -mt-20;
   }
 
   .availability-form {
-    @apply grid w-full max-w-[1100px] grid-cols-[repeat(4,minmax(150px,1fr))_auto] items-end gap-3;
+    @apply mx-auto grid w-full max-w-[1180px] grid-cols-[repeat(4,minmax(150px,1fr))_auto] items-end gap-3 border border-gold/30 bg-[#f8f3ea]/95 p-5 shadow-glow;
+    backdrop-filter: blur(16px);
   }
 
   .availability-form label {
-    @apply grid gap-2 font-bold text-[#405049];
+    @apply grid gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-forest-800;
   }
 
   .availability-form input,
   .availability-form select {
-    @apply min-h-11 rounded-md border border-forest-300 bg-white px-3;
+    @apply min-h-12 rounded-none border border-gold/35 bg-[#fffaf2] px-3 text-sm font-semibold text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/20;
   }
 
   .public-cabin-grid {
-    @apply grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5;
+    @apply grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6;
   }
 
   .public-cabin-card,
   .reservation-summary {
-    @apply overflow-hidden rounded-lg border border-forest-200 bg-white text-ink no-underline shadow-soft;
+    @apply overflow-hidden border border-gold/25 bg-[#fbf7ef] text-ink no-underline shadow-soft transition duration-300;
+  }
+
+  .public-cabin-card:hover,
+  .reservation-summary:hover {
+    @apply -translate-y-1 border-gold shadow-glow;
   }
 
   .public-cabin-card img,
   .reservation-summary img {
-    @apply block aspect-video w-full bg-forest-100 object-cover;
+    @apply block aspect-[4/3] w-full bg-forest-100 object-cover;
   }
 
   .public-cabin-card div,
   .reservation-summary div {
-    @apply grid gap-2 p-3.5;
+    @apply grid gap-3 p-5;
+  }
+
+  .public-cabin-card strong,
+  .reservation-summary strong {
+    @apply font-serif text-2xl font-semibold text-forest-800;
   }
 
   .public-cabin-card p,
   .reservation-summary p {
-    @apply leading-snug text-[#405049];
+    @apply text-sm leading-7 text-muted;
   }
 
   .public-cabin-card span,
   .reservation-summary span {
-    @apply text-sm text-[#607068];
+    @apply text-xs font-extrabold uppercase tracking-[0.16em] text-gold;
   }
 }
 
 @layer utilities {
-  @media (max-width: 900px) {
+  @media (max-width: 1000px) {
     .shell {
       @apply grid-cols-1;
     }
 
     .sidebar {
-      @apply static p-4;
+      @apply static h-auto p-4;
     }
 
     .nav {
@@ -426,21 +488,21 @@
     }
 
     .public-nav {
-      @apply items-start p-4;
+      @apply items-start px-4;
     }
 
     .public-hero {
-      @apply px-5 py-9;
+      @apply px-5 pb-20 pt-32;
     }
 
-    .public-strip {
-      @apply p-5;
+    .public-cabins-section {
+      @apply px-5;
     }
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 640px) {
     h1 {
-      @apply text-2xl;
+      @apply text-3xl;
     }
 
     .page-header {
@@ -455,8 +517,29 @@
       @apply p-5;
     }
 
+    .public-nav {
+      @apply static bg-forest-900;
+    }
+
+    .public-nav nav {
+      @apply w-full;
+    }
+
+    .public-nav .primary-button,
+    .public-nav .secondary-button {
+      @apply flex-1 px-3;
+    }
+
+    .public-hero {
+      @apply min-h-[70vh] pt-14;
+    }
+
     .public-hero h1 {
-      @apply text-4xl;
+      @apply text-5xl;
+    }
+
+    #cabins {
+      @apply mt-0;
     }
   }
 }
