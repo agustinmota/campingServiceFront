@@ -231,6 +231,38 @@
     @apply overflow-x-auto;
   }
 
+  .inline-edit-form {
+    @apply grid gap-4 border-b border-gold/20 bg-[#fffaf2] p-5;
+  }
+
+  .inline-edit-form strong {
+    @apply block font-serif text-xl font-semibold text-forest-800;
+  }
+
+  .inline-edit-form span {
+    @apply mt-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+
+  .inline-edit-fields {
+    @apply grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3;
+  }
+
+  .inline-edit-fields label {
+    @apply grid gap-2 text-[0.62rem] font-extrabold uppercase tracking-[0.14em] text-forest-800;
+  }
+
+  .inline-edit-fields input {
+    @apply min-h-11 w-full border border-gold/35 bg-[#fffaf2] px-3 text-sm font-semibold normal-case tracking-normal text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/20;
+  }
+
+  .inline-edit-actions {
+    @apply flex flex-wrap justify-end gap-3;
+  }
+
+  .editing-row td {
+    @apply bg-gold/10;
+  }
+
   .bookings-list-panel {
     @apply grid gap-4;
   }
@@ -255,6 +287,10 @@
 
   .resource-thumb {
     @apply block h-16 w-28 bg-forest-100 object-cover;
+  }
+
+  .upload-preview {
+    @apply mt-2 block aspect-video w-full max-w-52 border border-gold/25 bg-forest-100 object-cover;
   }
 
   .user-home-stack {
@@ -303,7 +339,11 @@
   }
 
   .actions-cell {
-    @apply w-14 text-right;
+    @apply w-28 text-right;
+  }
+
+  .actions-cell .icon-button {
+    @apply ml-2;
   }
 
   .booking-status-badge {
@@ -1140,6 +1180,18 @@
     @apply min-h-8 border-forest-800/10 bg-white/40 text-[0.58rem] tracking-[0.14em] focus:border-gold focus:ring-0;
   }
 
+  .admin-shell .inline-edit-form {
+    @apply border-b border-forest-800/10 bg-white/35;
+  }
+
+  .admin-shell .inline-edit-fields label {
+    @apply text-[0.52rem] tracking-[0.2em] text-gold;
+  }
+
+  .admin-shell .inline-edit-fields input {
+    @apply min-h-10 border-0 border-b border-forest-800/20 bg-transparent px-0 text-sm font-normal text-forest-800 focus:border-gold focus:ring-0;
+  }
+
   .admin-shell table {
     @apply bg-transparent;
   }
@@ -1158,6 +1210,10 @@
 
   .admin-shell .resource-thumb {
     @apply h-14 w-24 rounded-none;
+  }
+
+  .admin-shell .upload-preview {
+    @apply border-forest-800/10;
   }
 
   .admin-shell .state-text {
@@ -1179,6 +1235,104 @@
 
   .admin-two-col {
     @apply grid grid-cols-[1.45fr_1fr] gap-5;
+  }
+
+  .analytics-grid {
+    @apply grid grid-cols-[1.35fr_1fr_1fr] gap-5;
+  }
+
+  .analytics-card {
+    @apply overflow-hidden border border-forest-800/10 bg-white/50 p-6 shadow-none;
+    backdrop-filter: blur(8px);
+  }
+
+  .analytics-card.featured {
+    @apply bg-forest-800 text-parch;
+  }
+
+  .analytics-card-head {
+    @apply flex items-start justify-between gap-4;
+  }
+
+  .analytics-card-head span {
+    @apply block text-[0.56rem] font-bold uppercase tracking-[0.24em] text-muted;
+  }
+
+  .analytics-card.featured .analytics-card-head span {
+    @apply text-parch/45;
+  }
+
+  .analytics-card-head strong {
+    @apply mt-3 block font-serif text-[2rem] font-normal leading-none text-forest-800;
+  }
+
+  .analytics-card.featured .analytics-card-head strong {
+    @apply text-gilded;
+  }
+
+  .analytics-card svg {
+    @apply h-5 w-5 text-gold;
+  }
+
+  .analytics-card p {
+    @apply mt-5 text-xs leading-6 text-muted;
+  }
+
+  .analytics-card.featured p {
+    @apply text-parch/55;
+  }
+
+  .analytics-meter {
+    @apply mt-6 h-2 overflow-hidden bg-parch/15;
+  }
+
+  .analytics-meter span {
+    @apply block h-full bg-gold transition-all duration-500;
+  }
+
+  .analytics-two-col {
+    @apply grid-cols-[1fr_1fr];
+  }
+
+  .analytics-bars {
+    @apply grid gap-4 p-6;
+  }
+
+  .analytics-bar-row {
+    @apply grid grid-cols-[160px_minmax(0,1fr)_44px] items-center gap-4;
+  }
+
+  .analytics-bar-row strong {
+    @apply block text-sm font-semibold text-forest-800;
+  }
+
+  .analytics-bar-row span {
+    @apply mt-1 block text-xs text-muted;
+  }
+
+  .analytics-bar-row em {
+    @apply text-right text-xs not-italic font-bold text-gold;
+  }
+
+  .analytics-bar-track {
+    @apply h-2 overflow-hidden bg-forest-800/10;
+  }
+
+  .analytics-bar-track span {
+    @apply block h-full bg-gold;
+  }
+
+  .analytics-bar-track .confirmed,
+  .analytics-bar-track .checked_in {
+    @apply bg-forest-700;
+  }
+
+  .analytics-bar-track .checked_out {
+    @apply bg-muted;
+  }
+
+  .analytics-bar-track .cancelled {
+    @apply bg-[#8b2f2f];
   }
 
   .admin-list {
@@ -1414,9 +1568,11 @@
     }
 
     .stats-grid,
+    .analytics-grid,
     .work-grid,
     .booking-home-grid,
     .admin-two-col,
+    .analytics-two-col,
     .admin-calendar-layout,
     .availability-form,
     .public-strip,

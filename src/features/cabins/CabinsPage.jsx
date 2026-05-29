@@ -29,7 +29,7 @@ export function CabinsPage() {
         { name: "description", label: "Description" },
         { name: "maxCapacity", label: "Maximum capacity", type: "number", min: 1 },
         { name: "pricePerDay", label: "Price per day", type: "number", min: 0 },
-        { name: "imageUrl", label: "Photo URL" }
+        { name: "imageUrl", label: "Photo", type: "file", accept: "image/*" }
       ]}
       canManage={user?.role === "admin"}
     />

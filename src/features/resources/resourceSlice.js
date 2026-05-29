@@ -30,6 +30,15 @@ export const createResource = createAsyncThunk("resources/create", async ({ reso
   return resource;
 });
 
+export const updateResource = createAsyncThunk("resources/update", async ({ resource, id, values }, { dispatch }) => {
+  await apiRequest(`${endpoints[resource]}/edit/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(values)
+  });
+  await dispatch(fetchResource(resource));
+  return resource;
+});
+
 export const deleteResource = createAsyncThunk("resources/delete", async ({ resource, id }, { dispatch }) => {
   await apiRequest(`${endpoints[resource]}/delete/${id}`, {
     method: "DELETE"
@@ -73,6 +82,9 @@ const resourceSlice = createSlice({
         state.errors[action.meta.arg] = action.error.message;
       })
       .addCase(createResource.rejected, (state, action) => {
+        state.errors[action.meta.arg.resource] = action.error.message;
+      })
+      .addCase(updateResource.rejected, (state, action) => {
         state.errors[action.meta.arg.resource] = action.error.message;
       })
       .addCase(deleteResource.rejected, (state, action) => {

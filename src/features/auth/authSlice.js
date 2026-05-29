@@ -4,6 +4,28 @@ import { apiRequest } from "../../services/api";
 const savedToken = localStorage.getItem("camping_token");
 const savedUser = localStorage.getItem("camping_user");
 
+function getTokenPayload(token) {
+  try {
+    const payload = token.split(".")[1];
+    const normalizedPayload = payload.replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(atob(normalizedPayload));
+  } catch {
+    return null;
+  }
+}
+
+function isTokenExpired(token) {
+  const payload = getTokenPayload(token);
+  return !payload?.exp || payload.exp * 1000 <= Date.now();
+}
+
+const hasValidSavedSession = savedToken && !isTokenExpired(savedToken);
+
+if (savedToken && !hasValidSavedSession) {
+  localStorage.removeItem("camping_token");
+  localStorage.removeItem("camping_user");
+}
+
 export const login = createAsyncThunk("auth/login", async (credentials) => {
   const data = await apiRequest("/tokens/login", {
     method: "POST",
@@ -23,8 +45,8 @@ export const register = createAsyncThunk("auth/register", async (values) => {
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: savedToken,
-    user: savedUser ? JSON.parse(savedUser) : null,
+    token: hasValidSavedSession ? savedToken : null,
+    user: hasValidSavedSession && savedUser ? JSON.parse(savedUser) : null,
     status: "idle",
     error: null
   },
@@ -70,4 +92,5 @@ const authSlice = createSlice({
 export const { logout } = authSlice.actions;
 export const selectAuthToken = (state) => state.auth.token;
 export const selectAuthUser = (state) => state.auth.user;
+export { isTokenExpired };
 export default authSlice.reducer;
