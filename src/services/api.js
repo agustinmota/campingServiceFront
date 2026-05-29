@@ -28,7 +28,7 @@ export async function apiRequest(path, options = {}) {
     return response.data;
   } catch (error) {
     const data = error.response?.data;
-    const message = typeof data === "string" ? data : data?.message || data?.error || error.message || "Error en la solicitud";
+    const message = typeof data === "string" ? data : data?.message || data?.error || error.message || "Request failed";
     throw new Error(message);
   }
 }

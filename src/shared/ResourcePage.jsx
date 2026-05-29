@@ -38,7 +38,7 @@ export function ResourcePage({ resource, title, description, columns, fields, em
           <h1>{title}</h1>
           <p>{description}</p>
         </div>
-        <button className="icon-button" type="button" title="Actualizar" onClick={() => dispatch(fetchResource(resource))}>
+        <button className="icon-button" type="button" title="Refresh" onClick={() => dispatch(fetchResource(resource))}>
           <RefreshCw size={18} />
         </button>
       </div>
@@ -46,7 +46,7 @@ export function ResourcePage({ resource, title, description, columns, fields, em
       <div className="work-grid">
         {canManage ? (
           <form className="panel form compact-form" onSubmit={handleSubmit}>
-            <h2>Nuevo registro</h2>
+            <h2>New record</h2>
             {fields.map((field) => (
               <label key={field.name}>
                 {field.label}
@@ -63,13 +63,13 @@ export function ResourcePage({ resource, title, description, columns, fields, em
             {error ? <p className="error">{error}</p> : null}
             <button className="primary-button" type="submit">
               <Plus size={18} />
-              Crear
+              Create
             </button>
           </form>
         ) : (
           <aside className="panel readonly-panel">
-            <h2>Vista de usuario</h2>
-            <p>Tu cuenta puede consultar alojamientos disponibles. Las altas, bajas y ediciones quedan para administradores.</p>
+            <h2>User view</h2>
+            <p>Your account can browse available accommodations. Creating, deleting, and editing records is reserved for administrators.</p>
           </aside>
         )}
 
@@ -94,7 +94,7 @@ export function ResourcePage({ resource, title, description, columns, fields, em
                       <button
                         className="icon-button danger"
                         type="button"
-                        title="Eliminar"
+                        title="Delete"
                         onClick={() => dispatch(deleteResource({ resource, id: item.id }))}
                       >
                         <Trash2 size={17} />
@@ -106,7 +106,7 @@ export function ResourcePage({ resource, title, description, columns, fields, em
             </tbody>
           </table>
 
-          {status === "loading" ? <p className="state-text">Cargando...</p> : null}
+          {status === "loading" ? <p className="state-text">Loading...</p> : null}
           {status !== "loading" && items.length === 0 ? <p className="state-text">{emptyText}</p> : null}
         </div>
       </div>

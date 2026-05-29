@@ -4,9 +4,9 @@ import { PublicHomePage } from "./features/public/PublicHomePage";
 import { LoginPage } from "./features/auth/LoginPage";
 import { RegisterPage } from "./features/auth/RegisterPage";
 import { DashboardPage } from "./features/dashboard/DashboardPage";
+import { AdminCalendarPage } from "./features/calendar/AdminCalendarPage";
 import { CabinsPage } from "./features/cabins/CabinsPage";
 import { CampsitesPage } from "./features/campsites/CampsitesPage";
-import { GuestsPage } from "./features/guests/GuestsPage";
 import { BookingsPage } from "./features/bookings/BookingsPage";
 import { ReservationPage } from "./features/reservations/ReservationPage";
 import { ProtectedRoute } from "./shared/ProtectedRoute";
@@ -43,17 +43,17 @@ export const router = createBrowserRouter([
           </RoleRoute>
         )
       },
-      { path: "cabins", element: <CabinsPage /> },
-      { path: "reserve/:type/:id", element: <ReservationPage /> },
-      { path: "campsites", element: <CampsitesPage /> },
       {
-        path: "guests",
+        path: "calendar",
         element: (
           <RoleRoute roles={["admin"]}>
-            <GuestsPage />
+            <AdminCalendarPage />
           </RoleRoute>
         )
       },
+      { path: "cabins", element: <CabinsPage /> },
+      { path: "reserve/:type/:id", element: <ReservationPage /> },
+      { path: "campsites", element: <CampsitesPage /> },
       {
         path: "bookings",
         element: (

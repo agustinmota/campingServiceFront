@@ -13,7 +13,6 @@ export function ReservationPage() {
     firstName: "",
     lastName: "",
     document: "",
-    phone: "",
     checkIn: "",
     checkOut: "",
     amountOfPeople: 1
@@ -44,23 +43,15 @@ export function ReservationPage() {
     setError(null);
 
     try {
-      const guestData = await apiRequest("/guest/create", {
+      await apiRequest("/booking/create", {
         method: "POST",
         body: JSON.stringify({
           firstName: form.firstName,
           lastName: form.lastName,
           document: form.document,
-          phone: form.phone
-        })
-      });
-
-      await apiRequest("/booking/create", {
-        method: "POST",
-        body: JSON.stringify({
           checkIn: form.checkIn,
           checkOut: form.checkOut,
           amountOfPeople: form.amountOfPeople,
-          guestId: guestData.newGuest.id,
           accommodationId: Number(id)
         })
       });
@@ -76,29 +67,25 @@ export function ReservationPage() {
     <section className="page">
       <div className="page-header">
         <div>
-          <h1>Reservar {type === "campsite" ? "parcela" : "cabana"} {accommodation?.identifier}</h1>
-          <p>Completá tus datos para confirmar la estadia.</p>
+          <h1>Book {type === "campsite" ? "campsite" : "cabin"} {accommodation?.identifier}</h1>
+          <p>Complete your details to confirm the stay.</p>
         </div>
       </div>
 
       <div className="booking-home-grid">
         <form className="panel form compact-form" onSubmit={handleSubmit}>
-          <h2>Datos de reserva</h2>
+          <h2>Booking details</h2>
           <label>
-            Nombre
+            First name
             <input name="firstName" value={form.firstName} onChange={handleChange} required />
           </label>
           <label>
-            Apellido
+            Last name
             <input name="lastName" value={form.lastName} onChange={handleChange} required />
           </label>
           <label>
-            Documento
+            Document
             <input name="document" value={form.document} onChange={handleChange} required />
-          </label>
-          <label>
-            Telefono
-            <input name="phone" value={form.phone} onChange={handleChange} required />
           </label>
           <label>
             Check-in
@@ -109,7 +96,7 @@ export function ReservationPage() {
             <input name="checkOut" type="date" value={form.checkOut} onChange={handleChange} required />
           </label>
           <label>
-            Personas
+            Guests
             <input name="amountOfPeople" type="number" min="1" max={accommodation?.maxCapacity} value={form.amountOfPeople} onChange={handleChange} required />
           </label>
 
@@ -117,18 +104,18 @@ export function ReservationPage() {
 
           <button className="primary-button" type="submit" disabled={status === "loading"}>
             <CalendarPlus size={18} />
-            {status === "loading" ? "Reservando..." : "Confirmar reserva"}
+            {status === "loading" ? "Booking..." : "Confirm booking"}
           </button>
         </form>
 
         {accommodation ? (
           <article className="reservation-summary">
-            <img src={accommodation.imageUrl} alt={`${type === "campsite" ? "Parcela" : "Cabana"} ${accommodation.identifier}`} />
+            <img src={accommodation.imageUrl} alt={`${type === "campsite" ? "Campsite" : "Cabin"} ${accommodation.identifier}`} />
             <div>
-              <strong>{type === "campsite" ? "Parcela" : "Cabana"} {accommodation.identifier}</strong>
+              <strong>{type === "campsite" ? "Campsite" : "Cabin"} {accommodation.identifier}</strong>
               <p>{accommodation.description}</p>
-              <span>{accommodation.maxCapacity} personas</span>
-              <span>${type === "campsite" ? accommodation.pricePerPerson : accommodation.pricePerDay} {type === "campsite" ? "por persona" : "por dia"}</span>
+              <span>{accommodation.maxCapacity} guests</span>
+              <span>${type === "campsite" ? accommodation.pricePerPerson : accommodation.pricePerDay} {type === "campsite" ? "per person" : "per day"}</span>
             </div>
           </article>
         ) : null}

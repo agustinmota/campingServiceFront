@@ -8,28 +8,28 @@ export function CampsitesPage() {
   return (
     <ResourcePage
       resource="campsites"
-      title="Parcelas"
-      description="Espacios de camping con tarifa por persona."
-      emptyText="No hay parcelas cargadas."
+      title="Campsites"
+      description="Camping spaces with per-person pricing."
+      emptyText="No campsites have been added."
       columns={[
         {
           key: "imageUrl",
-          label: "Foto",
+          label: "Photo",
           render: (item) => (
-            <img className="resource-thumb" src={item.imageUrl} alt={`Parcela ${item.identifier}`} />
+            <img className="resource-thumb" src={item.imageUrl} alt={`Campsite ${item.identifier}`} />
           )
         },
-        { key: "identifier", label: "Identificador" },
-        { key: "description", label: "Descripcion" },
-        { key: "maxCapacity", label: "Capacidad" },
-        { key: "pricePerPerson", label: "Precio/persona", render: (item) => `$${item.pricePerPerson}` }
+        { key: "identifier", label: "Identifier" },
+        { key: "description", label: "Description" },
+        { key: "maxCapacity", label: "Capacity" },
+        { key: "pricePerPerson", label: "Price/person", render: (item) => `$${item.pricePerPerson}` }
       ]}
       fields={[
-        { name: "identifier", label: "Identificador" },
-        { name: "description", label: "Descripcion" },
-        { name: "maxCapacity", label: "Capacidad maxima", type: "number", min: 1 },
-        { name: "pricePerPerson", label: "Precio por persona", type: "number", min: 0 },
-        { name: "imageUrl", label: "URL de foto" }
+        { name: "identifier", label: "Identifier" },
+        { name: "description", label: "Description" },
+        { name: "maxCapacity", label: "Maximum capacity", type: "number", min: 1 },
+        { name: "pricePerPerson", label: "Price per person", type: "number", min: 0 },
+        { name: "imageUrl", label: "Photo URL" }
       ]}
       canManage={user?.role === "admin"}
     />

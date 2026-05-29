@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { ShieldCheck, LockKeyhole, Mail, Waves } from "lucide-react";
+import { ShieldCheck, LockKeyhole, Mail } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectAuthToken } from "./authSlice";
 
@@ -42,7 +42,7 @@ export function LoginPage() {
         navigate("/app/dashboard");
       } else {
         dispatch(logout());
-        setRoleError("Esta cuenta no tiene permisos de administrador.");
+        setRoleError("This account does not have administrator permissions.");
       }
     }
   };
@@ -51,10 +51,12 @@ export function LoginPage() {
     <main className="login-page">
       <section className="login-panel">
         <div className="login-brand">
-          <Waves size={36} />
+          <Link className="auth-logo-link" to="/" aria-label="Back to home">
+            <img className="brand-logo login-logo" src="/img/HOTEL%20LOGO.png" alt="Camping Service logo" />
+          </Link>
           <div>
             <h1>Camping Service</h1>
-            <p>Gestion de alojamientos y reservas</p>
+            <p>Accommodation and booking management</p>
           </div>
         </div>
 
@@ -78,13 +80,13 @@ export function LoginPage() {
           {error || roleError ? <p className="error">{roleError || error}</p> : null}
 
           <button className="primary-button" type="submit" disabled={status === "loading"}>
-            {status === "loading" ? "Entrando..." : "Entrar"}
+            {status === "loading" ? "Signing in..." : "Sign in"}
           </button>
           <button className="secondary-button" type="button" onClick={handleAdminLogin} disabled={status === "loading"}>
             <ShieldCheck size={18} />
-            Entrar como admin
+            Sign in as admin
           </button>
-          <Link className="text-link" to="/register">Crear usuario</Link>
+          <Link className="text-link" to="/register">Create user</Link>
         </form>
       </section>
     </main>

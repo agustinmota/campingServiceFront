@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LockKeyhole, Mail, User, UserPlus, Waves } from "lucide-react";
+import { LockKeyhole, Mail, User, UserPlus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "./authSlice";
 
@@ -27,16 +27,18 @@ export function RegisterPage() {
     <main className="login-page">
       <section className="login-panel">
         <div className="login-brand">
-          <Waves size={36} />
+          <Link className="auth-logo-link" to="/" aria-label="Back to home">
+            <img className="brand-logo login-logo" src="/img/HOTEL%20LOGO.png" alt="Camping Service logo" />
+          </Link>
           <div>
-            <h1>Crear usuario</h1>
-            <p>Cuenta de acceso general</p>
+            <h1>Create user</h1>
+            <p>General access account</p>
           </div>
         </div>
 
         <form className="form" onSubmit={handleSubmit}>
           <label>
-            Usuario
+            Username
             <span className="input-shell">
               <User size={18} />
               <input name="username" value={form.username} onChange={handleChange} required />
@@ -63,9 +65,9 @@ export function RegisterPage() {
 
           <button className="primary-button" type="submit" disabled={status === "loading"}>
             <UserPlus size={18} />
-            {status === "loading" ? "Creando..." : "Crear usuario"}
+            {status === "loading" ? "Creating..." : "Create user"}
           </button>
-          <Link className="text-link" to="/login">Ya tengo cuenta</Link>
+          <Link className="text-link" to="/login">I already have an account</Link>
         </form>
       </section>
     </main>

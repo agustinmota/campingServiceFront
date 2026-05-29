@@ -8,28 +8,28 @@ export function CabinsPage() {
   return (
     <ResourcePage
       resource="cabins"
-      title="Cabanas"
-      description="Administracion de alojamientos con precio por dia."
-      emptyText="No hay cabanas cargadas."
+      title="Cabins"
+      description="Accommodation management with daily pricing."
+      emptyText="No cabins have been added."
       columns={[
         {
           key: "imageUrl",
-          label: "Foto",
+          label: "Photo",
           render: (item) => (
-            <img className="resource-thumb" src={item.imageUrl} alt={`Cabana ${item.identifier}`} />
+            <img className="resource-thumb" src={item.imageUrl} alt={`Cabin ${item.identifier}`} />
           )
         },
-        { key: "identifier", label: "Identificador" },
-        { key: "description", label: "Descripcion" },
-        { key: "maxCapacity", label: "Capacidad" },
-        { key: "pricePerDay", label: "Precio/dia", render: (item) => `$${item.pricePerDay}` }
+        { key: "identifier", label: "Identifier" },
+        { key: "description", label: "Description" },
+        { key: "maxCapacity", label: "Capacity" },
+        { key: "pricePerDay", label: "Price/day", render: (item) => `$${item.pricePerDay}` }
       ]}
       fields={[
-        { name: "identifier", label: "Identificador" },
-        { name: "description", label: "Descripcion" },
-        { name: "maxCapacity", label: "Capacidad maxima", type: "number", min: 1 },
-        { name: "pricePerDay", label: "Precio por dia", type: "number", min: 0 },
-        { name: "imageUrl", label: "URL de foto" }
+        { name: "identifier", label: "Identifier" },
+        { name: "description", label: "Description" },
+        { name: "maxCapacity", label: "Maximum capacity", type: "number", min: 1 },
+        { name: "pricePerDay", label: "Price per day", type: "number", min: 0 },
+        { name: "imageUrl", label: "Photo URL" }
       ]}
       canManage={user?.role === "admin"}
     />

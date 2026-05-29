@@ -6,7 +6,6 @@ import { createResource, deleteResource, fetchResource } from "../resources/reso
 export function BookingsPage() {
   const dispatch = useDispatch();
   const bookings = useSelector((state) => state.resources.bookings);
-  const guests = useSelector((state) => state.resources.guests);
   const cabins = useSelector((state) => state.resources.cabins);
   const campsites = useSelector((state) => state.resources.campsites);
   const status = useSelector((state) => state.resources.status.bookings || "idle");
@@ -15,21 +14,22 @@ export function BookingsPage() {
     checkIn: "",
     checkOut: "",
     amountOfPeople: 1,
-    guestId: "",
+    firstName: "",
+    lastName: "",
+    document: "",
     accommodationId: ""
   });
 
   const accommodations = useMemo(
     () => [
-      ...cabins.map((item) => ({ ...item, type: "Cabana" })),
-      ...campsites.map((item) => ({ ...item, type: "Parcela" }))
+      ...cabins.map((item) => ({ ...item, type: "Cabin" })),
+      ...campsites.map((item) => ({ ...item, type: "Campsite" }))
     ],
     [cabins, campsites]
   );
 
   useEffect(() => {
     dispatch(fetchResource("bookings"));
-    dispatch(fetchResource("guests"));
     dispatch(fetchResource("cabins"));
     dispatch(fetchResource("campsites"));
   }, [dispatch]);
@@ -43,7 +43,7 @@ export function BookingsPage() {
     event.preventDefault();
     const result = await dispatch(createResource({ resource: "bookings", values: form }));
     if (createResource.fulfilled.match(result)) {
-      setForm({ checkIn: "", checkOut: "", amountOfPeople: 1, guestId: "", accommodationId: "" });
+      setForm({ checkIn: "", checkOut: "", amountOfPeople: 1, firstName: "", lastName: "", document: "", accommodationId: "" });
     }
   };
 
@@ -51,17 +51,29 @@ export function BookingsPage() {
     <section className="page">
       <div className="page-header">
         <div>
-          <h1>Reservas</h1>
-          <p>Alta y seguimiento de estadias confirmadas.</p>
+          <h1>Bookings</h1>
+          <p>Create and track confirmed stays.</p>
         </div>
-        <button className="icon-button" type="button" title="Actualizar" onClick={() => dispatch(fetchResource("bookings"))}>
+        <button className="icon-button" type="button" title="Refresh" onClick={() => dispatch(fetchResource("bookings"))}>
           <RefreshCw size={18} />
         </button>
       </div>
 
       <div className="work-grid">
         <form className="panel form compact-form" onSubmit={handleSubmit}>
-          <h2>Nueva reserva</h2>
+          <h2>New booking</h2>
+          <label>
+            Holder first name
+            <input name="firstName" value={form.firstName} onChange={handleChange} required />
+          </label>
+          <label>
+            Holder last name
+            <input name="lastName" value={form.lastName} onChange={handleChange} required />
+          </label>
+          <label>
+            Holder document
+            <input name="document" value={form.document} onChange={handleChange} required />
+          </label>
           <label>
             Check-in
             <input name="checkIn" type="date" value={form.checkIn} onChange={handleChange} required />
@@ -71,24 +83,13 @@ export function BookingsPage() {
             <input name="checkOut" type="date" value={form.checkOut} onChange={handleChange} required />
           </label>
           <label>
-            Personas
+            Guests
             <input name="amountOfPeople" type="number" min="1" value={form.amountOfPeople} onChange={handleChange} required />
           </label>
           <label>
-            Huesped
-            <select name="guestId" value={form.guestId} onChange={handleChange} required>
-              <option value="">Seleccionar</option>
-              {guests.map((guest) => (
-                <option key={guest.id} value={guest.id}>
-                  {guest.firstName} {guest.lastName}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Alojamiento
+            Accommodation
             <select name="accommodationId" value={form.accommodationId} onChange={handleChange} required>
-              <option value="">Seleccionar</option>
+              <option value="">Select</option>
               {accommodations.map((item) => (
                 <option key={`${item.type}-${item.id}`} value={item.id}>
                   {item.type} {item.identifier}
@@ -99,7 +100,7 @@ export function BookingsPage() {
           {error ? <p className="error">{error}</p> : null}
           <button className="primary-button" type="submit">
             <CalendarPlus size={18} />
-            Crear
+            Create
           </button>
         </form>
 
@@ -107,9 +108,10 @@ export function BookingsPage() {
           <table>
             <thead>
               <tr>
-                <th>Ingreso</th>
-                <th>Salida</th>
-                <th>Personas</th>
+                <th>Holder</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Guests</th>
                 <th>Total</th>
                 <th aria-label="Acciones" />
               </tr>
@@ -117,6 +119,7 @@ export function BookingsPage() {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking.id}>
+                  <td>{booking.Guest ? `${booking.Guest.firstName} ${booking.Guest.lastName}` : "-"}</td>
                   <td>{new Date(booking.checkIn).toLocaleDateString()}</td>
                   <td>{new Date(booking.checkOut).toLocaleDateString()}</td>
                   <td>{booking.amountOfPeople}</td>
@@ -125,7 +128,7 @@ export function BookingsPage() {
                     <button
                       className="icon-button danger"
                       type="button"
-                      title="Eliminar"
+                      title="Delete"
                       onClick={() => dispatch(deleteResource({ resource: "bookings", id: booking.id }))}
                     >
                       <Trash2 size={17} />
@@ -135,8 +138,8 @@ export function BookingsPage() {
               ))}
             </tbody>
           </table>
-          {status === "loading" ? <p className="state-text">Cargando...</p> : null}
-          {status !== "loading" && bookings.length === 0 ? <p className="state-text">No hay reservas cargadas.</p> : null}
+          {status === "loading" ? <p className="state-text">Loading...</p> : null}
+          {status !== "loading" && bookings.length === 0 ? <p className="state-text">No bookings have been added.</p> : null}
         </div>
       </div>
     </section>
