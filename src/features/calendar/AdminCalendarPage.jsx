@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchResource } from "../resources/resourceSlice";
 
 const weekdayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const reservedStatuses = ["pending", "confirmed"];
+const occupiedStatuses = ["checked_in", "checked_out"];
+const blockingStatuses = ["pending", "confirmed", "checked_in"];
 
 function getDateKey(date) {
   const year = date.getFullYear();
@@ -33,14 +36,17 @@ function getBookingDateStatus(date, bookings) {
     return "empty";
   }
 
-  const today = normalizeDate(new Date());
-  const hasBooking = bookings.some((booking) => isDateInBooking(date, booking));
+  const dateBookings = bookings.filter((booking) => booking.status !== "cancelled" && isDateInBooking(date, booking));
 
-  if (!hasBooking) {
-    return "available";
+  if (dateBookings.some((booking) => occupiedStatuses.includes(booking.status))) {
+    return "occupied";
   }
 
-  return date <= today ? "occupied" : "reserved";
+  if (dateBookings.some((booking) => reservedStatuses.includes(booking.status || "pending"))) {
+    return "reserved";
+  }
+
+  return "available";
 }
 
 export function AdminCalendarPage() {
@@ -105,7 +111,11 @@ export function AdminCalendarPage() {
   const getAccommodationStatus = (accommodationId) => {
     const today = normalizeDate(new Date());
     const isOccupied = bookings.some(
-      (booking) => Number(booking.accommodationId) === Number(accommodationId) && isDateInBooking(today, booking)
+      (booking) => (
+        Number(booking.accommodationId) === Number(accommodationId)
+        && blockingStatuses.includes(booking.status || "pending")
+        && isDateInBooking(today, booking)
+      )
     );
 
     return isOccupied ? "occupied" : "available";
@@ -122,7 +132,7 @@ export function AdminCalendarPage() {
       return null;
     }
 
-    return selectedBookings.find((booking) => isDateInBooking(date, booking)) || null;
+    return selectedBookings.find((booking) => booking.status !== "cancelled" && isDateInBooking(date, booking)) || null;
   };
 
   const handleCalendarDayClick = (date) => {

@@ -9,6 +9,10 @@ const cards = [
   { key: "bookings", label: "Bookings", icon: CalendarDays }
 ];
 
+function formatBookingStatus(status = "pending") {
+  return status.replace("_", " ");
+}
+
 export function DashboardPage() {
   const dispatch = useDispatch();
   const resources = useSelector((state) => state.resources);
@@ -20,7 +24,7 @@ export function DashboardPage() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const upcomingBookings = [...resources.bookings]
-    .filter((booking) => new Date(booking.checkIn) >= today)
+    .filter((booking) => booking.status !== "cancelled" && new Date(booking.checkIn) >= today)
     .sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn))
     .slice(0, 5);
   const accommodationStatus = [
@@ -61,7 +65,7 @@ export function DashboardPage() {
                 </div>
                 <div>
                   <strong>{booking.amountOfPeople} guests</strong>
-                  <span>${booking.totalAmount}</span>
+                  <span>${booking.totalAmount} - {formatBookingStatus(booking.status)}</span>
                 </div>
               </div>
             ))}

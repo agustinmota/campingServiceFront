@@ -1,6 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,jsx}"],
+  content: [
+    "./index.html",
+    "./src/*.{js,jsx}",
+    "./src/features/{auth,bookings,cabins,calendar,campsites,dashboard,public,reservations,resources}/**/*.{js,jsx}",
+    "./src/services/**/*.{js,jsx}",
+    "./src/shared/**/*.{js,jsx}",
+    "./src/store/**/*.{js,jsx}"
+  ],
   theme: {
     extend: {
       fontFamily: {

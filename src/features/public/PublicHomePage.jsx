@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { CalendarSearch, LogIn, LogOut, Menu, UserPlus, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectAuthToken, selectAuthUser } from "../auth/authSlice";
 import { apiRequest } from "../../services/api";
+
+function formatBookingStatus(status = "pending") {
+  return status.replace("_", " ");
+}
 
 export function PublicHomePage() {
   const dispatch = useDispatch();
@@ -16,6 +20,7 @@ export function PublicHomePage() {
   const [error, setError] = useState(null);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isNavAtTop, setIsNavAtTop] = useState(true);
+  const [isShowingAllAccommodations, setIsShowingAllAccommodations] = useState(false);
   const [search, setSearch] = useState({ checkIn: "", checkOut: "", type: "all", amountOfPeople: 1 });
 
   useEffect(() => {
@@ -28,6 +33,7 @@ export function PublicHomePage() {
         const cabins = (cabinsData.cabins || []).map((item) => ({ ...item, type: "cabin", typeLabel: "Cabin", price: item.pricePerDay, priceLabel: "per day" }));
         const campsites = (Array.isArray(campsitesData) ? campsitesData : []).map((item) => ({ ...item, type: "campsite", typeLabel: "Campsite", price: item.pricePerPerson, priceLabel: "per person" }));
         setAccommodations([...cabins, ...campsites]);
+        setIsShowingAllAccommodations(false);
       } catch (requestError) {
         setError(requestError.message);
       }
@@ -63,6 +69,11 @@ export function PublicHomePage() {
     return () => window.removeEventListener("scroll", updateNavbarState);
   }, []);
 
+  const visibleAccommodations = useMemo(
+    () => (isShowingAllAccommodations ? accommodations : accommodations.slice(0, 5)),
+    [accommodations, isShowingAllAccommodations]
+  );
+
   const handleDateChange = (event) => {
     setSearch((current) => ({ ...current, [event.target.name]: event.target.value }));
   };
@@ -91,6 +102,7 @@ export function PublicHomePage() {
       const cabins = (results.find((result) => result.cabins)?.cabins || []).map((item) => ({ ...item, type: "cabin", typeLabel: "Cabin", price: item.pricePerDay, priceLabel: "per day" }));
       const campsites = (results.find((result) => result.campsites)?.campsites || []).map((item) => ({ ...item, type: "campsite", typeLabel: "Campsite", price: item.pricePerPerson, priceLabel: "per person" }));
       setAccommodations([...cabins, ...campsites]);
+      setIsShowingAllAccommodations(false);
       setStatus("succeeded");
       window.requestAnimationFrame(() => {
         roomsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -250,7 +262,7 @@ export function PublicHomePage() {
         {error ? <p className="error">{error}</p> : null}
 
         <div className="public-cabin-grid">
-          {accommodations.map((accommodation) => (
+          {visibleAccommodations.map((accommodation) => (
             <Link className="public-cabin-card" to={`/app/reserve/${accommodation.type}/${accommodation.id}`} key={`${accommodation.type}-${accommodation.id}`}>
               <img src={accommodation.imageUrl} alt={`${accommodation.typeLabel} ${accommodation.identifier}`} />
               <div>
@@ -262,6 +274,14 @@ export function PublicHomePage() {
             </Link>
           ))}
         </div>
+
+        {accommodations.length > 5 && !isShowingAllAccommodations ? (
+          <div className="rooms-see-more">
+            <button className="primary-button" type="button" onClick={() => setIsShowingAllAccommodations(true)}>
+              See more
+            </button>
+          </div>
+        ) : null}
 
         {accommodations.length === 0 ? <p className="state-text">No accommodations are available for those filters.</p> : null}
         </div>
@@ -337,6 +357,7 @@ export function PublicHomePage() {
                   <th>Check-out</th>
                   <th>Guests</th>
                   <th>Total</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -346,6 +367,11 @@ export function PublicHomePage() {
                     <td>{new Date(booking.checkOut).toLocaleDateString()}</td>
                     <td>{booking.amountOfPeople}</td>
                     <td>${booking.totalAmount}</td>
+                    <td>
+                      <span className={`booking-status-badge ${booking.status || "pending"}`}>
+                        {formatBookingStatus(booking.status)}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>

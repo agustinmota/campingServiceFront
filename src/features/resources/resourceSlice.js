@@ -38,6 +38,15 @@ export const deleteResource = createAsyncThunk("resources/delete", async ({ reso
   return resource;
 });
 
+export const updateBookingStatus = createAsyncThunk("resources/updateBookingStatus", async ({ id, status }, { dispatch }) => {
+  await apiRequest(`/booking/status/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ status })
+  });
+  await dispatch(fetchResource("bookings"));
+  return "bookings";
+});
+
 const resourceSlice = createSlice({
   name: "resources",
   initialState: {
@@ -68,6 +77,9 @@ const resourceSlice = createSlice({
       })
       .addCase(deleteResource.rejected, (state, action) => {
         state.errors[action.meta.arg.resource] = action.error.message;
+      })
+      .addCase(updateBookingStatus.rejected, (state, action) => {
+        state.errors.bookings = action.error.message;
       });
   }
 });

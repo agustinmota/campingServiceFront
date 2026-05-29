@@ -231,6 +231,28 @@
     @apply overflow-x-auto;
   }
 
+  .bookings-list-panel {
+    @apply grid gap-4;
+  }
+
+  .booking-filters {
+    @apply grid items-end gap-3 border border-gold/25 bg-[#f8f3ea] p-4 shadow-soft;
+    grid-template-columns: repeat(4, minmax(130px, 1fr)) auto;
+  }
+
+  .booking-filters label {
+    @apply grid gap-2 text-[0.62rem] font-extrabold uppercase tracking-[0.14em] text-forest-800;
+  }
+
+  .booking-filters input,
+  .booking-filters select {
+    @apply min-h-11 w-full border border-gold/35 bg-[#fffaf2] px-3 text-sm font-semibold normal-case tracking-normal text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/20;
+  }
+
+  .booking-filters .secondary-button {
+    @apply min-h-11 whitespace-nowrap;
+  }
+
   .resource-thumb {
     @apply block h-16 w-28 bg-forest-100 object-cover;
   }
@@ -282,6 +304,34 @@
 
   .actions-cell {
     @apply w-14 text-right;
+  }
+
+  .booking-status-badge {
+    @apply inline-flex w-fit items-center whitespace-nowrap border px-2.5 py-1 text-[0.62rem] font-extrabold uppercase tracking-[0.12em];
+  }
+
+  .booking-status-badge.pending {
+    @apply border-[#b8933f]/30 bg-[#fff4d7] text-[#8d691c];
+  }
+
+  .booking-status-badge.confirmed {
+    @apply border-[#315f42]/25 bg-[#e4f2e8] text-[#315f42];
+  }
+
+  .booking-status-badge.checked_in {
+    @apply border-[#7f2f2a]/25 bg-[#f0d2cc] text-[#7f2f2a];
+  }
+
+  .booking-status-badge.checked_out {
+    @apply border-forest-800/15 bg-forest-100 text-forest-800;
+  }
+
+  .booking-status-badge.cancelled {
+    @apply border-muted/20 bg-[#ece8df] text-muted;
+  }
+
+  .booking-status-select {
+    @apply min-h-9 min-w-36 border border-gold/30 bg-[#fffaf2] px-2 text-xs font-bold uppercase tracking-[0.08em] text-forest-800 outline-none focus:border-gold focus:ring-2 focus:ring-gold/20;
   }
 
   .state-text {
@@ -756,6 +806,10 @@
     @apply text-parch/65;
   }
 
+  .rooms-see-more {
+    @apply mt-10 flex justify-center;
+  }
+
   .amenities-section {
     @apply bg-cream px-14 py-28;
   }
@@ -995,6 +1049,7 @@
   .admin-shell .stat-card,
   .admin-shell .panel,
   .admin-shell .table-wrap,
+  .admin-shell .booking-filters,
   .admin-shell .readonly-panel {
     @apply rounded-none border border-forest-800/10 bg-white/50 shadow-none;
     backdrop-filter: blur(8px);
@@ -1031,6 +1086,20 @@
     @apply grid-cols-[minmax(280px,380px)_minmax(0,1fr)] gap-5;
   }
 
+  .admin-shell .booking-filters {
+    @apply p-4;
+    grid-template-columns: repeat(4, minmax(120px, 1fr)) auto;
+  }
+
+  .admin-shell .booking-filters label {
+    @apply text-[0.52rem] tracking-[0.2em] text-gold;
+  }
+
+  .admin-shell .booking-filters input,
+  .admin-shell .booking-filters select {
+    @apply min-h-10 border-0 border-b border-forest-800/20 bg-transparent px-0 text-sm font-normal text-forest-800 focus:border-gold focus:ring-0;
+  }
+
   .admin-shell .compact-form {
     @apply p-7;
   }
@@ -1065,6 +1134,10 @@
 
   .admin-shell .icon-button.danger {
     @apply border-[#a04040]/20 bg-transparent text-[#833030] hover:bg-[#a04040]/10;
+  }
+
+  .admin-shell .booking-status-select {
+    @apply min-h-8 border-forest-800/10 bg-white/40 text-[0.58rem] tracking-[0.14em] focus:border-gold focus:ring-0;
   }
 
   .admin-shell table {
