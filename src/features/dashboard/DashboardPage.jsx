@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { BedDouble, CalendarDays, CircleDollarSign, Percent, Tent, UsersRound } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchResource } from "../resources/resourceSlice";
+import { buildAdminAccommodations } from "../../shared/accommodationUtils";
+import { bookingStatuses, formatBookingStatus } from "../../shared/bookingStatus";
+import { formatDate, isSameMonth, normalizeDate } from "../../shared/dateUtils";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
@@ -10,28 +13,6 @@ const cards = [
   { key: "campsites", label: "Campsites", icon: Tent },
   { key: "bookings", label: "Bookings", icon: CalendarDays }
 ];
-
-const bookingStatuses = [
-  { value: "pending", label: "Pending" },
-  { value: "confirmed", label: "Confirmed" },
-  { value: "checked_in", label: "Checked in" },
-  { value: "checked_out", label: "Checked out" },
-  { value: "cancelled", label: "Cancelled" }
-];
-
-function formatBookingStatus(status = "pending") {
-  return status.replace("_", " ");
-}
-
-function normalizeDate(value) {
-  const date = new Date(value);
-  date.setHours(0, 0, 0, 0);
-  return date;
-}
-
-function isSameMonth(date, monthStart) {
-  return date.getFullYear() === monthStart.getFullYear() && date.getMonth() === monthStart.getMonth();
-}
 
 function getOverlappingNights(booking, rangeStart, rangeEnd) {
   const checkIn = normalizeDate(booking.checkIn);
@@ -54,13 +35,14 @@ export function DashboardPage() {
   const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
   const nextMonthStart = new Date(today.getFullYear(), today.getMonth() + 1, 1);
   const daysInMonth = Math.ceil((nextMonthStart - monthStart) / MS_PER_DAY);
-  const accommodations = [
-    ...resources.cabins.map((item) => ({ ...item, type: "Cabin", price: item.pricePerDay, rateLabel: "per day" })),
-    ...resources.campsites.map((item) => ({ ...item, type: "Campsite", price: item.pricePerPerson, rateLabel: "per person" }))
-  ];
+  const accommodations = buildAdminAccommodations(resources.cabins, resources.campsites);
   const accommodationById = new Map(accommodations.map((item) => [Number(item.id), item]));
+  const getAccommodationLabel = (booking) => {
+    const accommodation = accommodationById.get(Number(booking.accommodationId));
+    return accommodation ? `${accommodation.type} ${accommodation.identifier}` : `${booking.amountOfPeople} guests`;
+  };
   const activeBookings = resources.bookings.filter((booking) => booking.status !== "cancelled");
-  const monthlyBookings = activeBookings.filter((booking) => isSameMonth(new Date(booking.checkIn), monthStart));
+  const monthlyBookings = activeBookings.filter((booking) => isSameMonth(normalizeDate(booking.checkIn), monthStart));
   const monthlyRevenue = monthlyBookings.reduce((total, booking) => total + Number(booking.totalAmount || 0), 0);
   const totalRevenue = activeBookings.reduce((total, booking) => total + Number(booking.totalAmount || 0), 0);
   const monthlyGuests = monthlyBookings.reduce((total, booking) => total + Number(booking.amountOfPeople || 0), 0);
@@ -86,8 +68,8 @@ export function DashboardPage() {
     .slice(0, 5);
 
   const upcomingBookings = [...resources.bookings]
-    .filter((booking) => booking.status !== "cancelled" && new Date(booking.checkIn) >= today)
-    .sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn))
+    .filter((booking) => booking.status !== "cancelled" && normalizeDate(booking.checkIn) >= today)
+    .sort((a, b) => normalizeDate(a.checkIn) - normalizeDate(b.checkIn))
     .slice(0, 5);
   const accommodationStatus = accommodations.slice(0, 6);
 
@@ -205,15 +187,11 @@ export function DashboardPage() {
             {upcomingBookings.map((booking) => (
               <div className="admin-list-row" key={booking.id}>
                 <div>
-                  <strong>{new Date(booking.checkIn).toLocaleDateString()}</strong>
-                  <span>{new Date(booking.checkOut).toLocaleDateString()} checkout</span>
+                  <strong>{formatDate(booking.checkIn)}</strong>
+                  <span>{formatDate(booking.checkOut)} checkout</span>
                 </div>
                 <div>
-                  <strong>
-                    {accommodationById.get(Number(booking.accommodationId))
-                      ? `${accommodationById.get(Number(booking.accommodationId)).type} ${accommodationById.get(Number(booking.accommodationId)).identifier}`
-                      : `${booking.amountOfPeople} guests`}
-                  </strong>
+                  <strong>{getAccommodationLabel(booking)}</strong>
                   <span>${booking.totalAmount} - {formatBookingStatus(booking.status)}</span>
                 </div>
               </div>

@@ -2,28 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchResource } from "../resources/resourceSlice";
+import { buildAdminAccommodations } from "../../shared/accommodationUtils";
+import { blockingStatuses, occupiedStatuses, reservedStatuses } from "../../shared/bookingStatus";
+import { getDateKey, isSameDay, normalizeDate } from "../../shared/dateUtils";
 
 const weekdayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const reservedStatuses = ["pending", "confirmed"];
-const occupiedStatuses = ["checked_in", "checked_out"];
-const blockingStatuses = ["pending", "confirmed", "checked_in"];
-
-function getDateKey(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function normalizeDate(value) {
-  const date = new Date(value);
-  date.setHours(0, 0, 0, 0);
-  return date;
-}
-
-function isSameDay(firstDate, secondDate) {
-  return getDateKey(firstDate) === getDateKey(secondDate);
-}
 
 function isDateInBooking(date, booking) {
   const checkIn = normalizeDate(booking.checkIn);
@@ -68,10 +51,7 @@ export function AdminCalendarPage() {
   }, [dispatch]);
 
   const accommodations = useMemo(
-    () => [
-      ...cabins.map((item) => ({ ...item, type: "Cabin", price: item.pricePerDay, rateLabel: "per day" })),
-      ...campsites.map((item) => ({ ...item, type: "Campsite", price: item.pricePerPerson, rateLabel: "per person" }))
-    ],
+    () => buildAdminAccommodations(cabins, campsites),
     [cabins, campsites]
   );
 

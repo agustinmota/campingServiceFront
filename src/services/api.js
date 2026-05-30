@@ -1,22 +1,13 @@
 import axios from "axios";
-import { logout } from "../features/auth/authSlice";
-import { store } from "../store/store";
+import { clearSavedSession, isTokenExpired, SESSION_EXPIRED_EVENT, TOKEN_STORAGE_KEY } from "../shared/authToken";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
-function getTokenPayload(token) {
-  try {
-    const payload = token.split(".")[1];
-    const normalizedPayload = payload.replace(/-/g, "+").replace(/_/g, "/");
-    return JSON.parse(atob(normalizedPayload));
-  } catch {
-    return null;
+function notifySessionExpired() {
+  clearSavedSession();
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
   }
-}
-
-function isTokenExpired(token) {
-  const payload = getTokenPayload(token);
-  return !payload?.exp || payload.exp * 1000 <= Date.now();
 }
 
 export const api = axios.create({
@@ -27,10 +18,10 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("camping_token");
+  const token = typeof window !== "undefined" ? localStorage.getItem(TOKEN_STORAGE_KEY) : null;
   if (token) {
     if (isTokenExpired(token)) {
-      store.dispatch(logout());
+      notifySessionExpired();
       delete config.headers.Authorization;
       return config;
     }
@@ -43,7 +34,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      store.dispatch(logout());
+      notifySessionExpired();
     }
     return Promise.reject(error);
   }

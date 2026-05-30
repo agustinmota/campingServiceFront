@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { CalendarSearch, LogIn, LogOut, Menu, UserPlus, X } from "lucide-react";
+import { CalendarSearch, LogIn, Menu, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectAuthToken, selectAuthUser } from "../auth/authSlice";
 import { apiRequest } from "../../services/api";
-
-function formatBookingStatus(status = "pending") {
-  return status.replace("_", " ");
-}
+import { buildPublicAccommodations, mapPublicCabins, mapPublicCampsites } from "../../shared/accommodationUtils";
+import { formatBookingStatus } from "../../shared/bookingStatus";
+import { formatDate } from "../../shared/dateUtils";
 
 export function PublicHomePage() {
   const dispatch = useDispatch();
@@ -30,9 +29,10 @@ export function PublicHomePage() {
           apiRequest("/cabin"),
           apiRequest("/campsite")
         ]);
-        const cabins = (cabinsData.cabins || []).map((item) => ({ ...item, type: "cabin", typeLabel: "Cabin", price: item.pricePerDay, priceLabel: "per day" }));
-        const campsites = (Array.isArray(campsitesData) ? campsitesData : []).map((item) => ({ ...item, type: "campsite", typeLabel: "Campsite", price: item.pricePerPerson, priceLabel: "per person" }));
-        setAccommodations([...cabins, ...campsites]);
+        setAccommodations(buildPublicAccommodations({
+          cabins: cabinsData.cabins || [],
+          campsites: Array.isArray(campsitesData) ? campsitesData : []
+        }));
         setIsShowingAllAccommodations(false);
       } catch (requestError) {
         setError(requestError.message);
@@ -99,8 +99,8 @@ export function PublicHomePage() {
       }
 
       const results = await Promise.all(requests);
-      const cabins = (results.find((result) => result.cabins)?.cabins || []).map((item) => ({ ...item, type: "cabin", typeLabel: "Cabin", price: item.pricePerDay, priceLabel: "per day" }));
-      const campsites = (results.find((result) => result.campsites)?.campsites || []).map((item) => ({ ...item, type: "campsite", typeLabel: "Campsite", price: item.pricePerPerson, priceLabel: "per person" }));
+      const cabins = mapPublicCabins(results.find((result) => result.cabins)?.cabins || []);
+      const campsites = mapPublicCampsites(results.find((result) => result.campsites)?.campsites || []);
       setAccommodations([...cabins, ...campsites]);
       setIsShowingAllAccommodations(false);
       setStatus("succeeded");
@@ -363,8 +363,8 @@ export function PublicHomePage() {
               <tbody>
                 {bookings.map((booking) => (
                   <tr key={booking.id}>
-                    <td>{new Date(booking.checkIn).toLocaleDateString()}</td>
-                    <td>{new Date(booking.checkOut).toLocaleDateString()}</td>
+                    <td>{formatDate(booking.checkIn)}</td>
+                    <td>{formatDate(booking.checkOut)}</td>
                     <td>{booking.amountOfPeople}</td>
                     <td>${booking.totalAmount}</td>
                     <td>
