@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CalendarPlus } from "lucide-react";
 import { apiRequest } from "../../services/api";
+import { formatCurrency } from "../../shared/currencyUtils";
 
 export function ReservationPage() {
   const { id, type = "cabin" } = useParams();
@@ -115,7 +116,7 @@ export function ReservationPage() {
               <strong>{type === "campsite" ? "Campsite" : "Cabin"} {accommodation.identifier}</strong>
               <p>{accommodation.description}</p>
               <span>{accommodation.maxCapacity} guests</span>
-              <span>${type === "campsite" ? accommodation.pricePerPerson : accommodation.pricePerDay} {type === "campsite" ? "per person" : "per day"}</span>
+              <span>{formatCurrency(type === "campsite" ? accommodation.pricePerPerson : accommodation.pricePerDay)} {type === "campsite" ? "per person" : "per day"}</span>
             </div>
           </article>
         ) : null}

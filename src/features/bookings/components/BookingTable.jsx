@@ -1,5 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { bookingStatuses, formatBookingStatus } from "../../../shared/bookingStatus";
+import { formatCurrency } from "../../../shared/currencyUtils";
 import { formatDate } from "../../../shared/dateUtils";
 
 export function BookingTable({ bookings, allBookingsCount, status, onDelete, onStatusChange }) {
@@ -25,7 +26,7 @@ export function BookingTable({ bookings, allBookingsCount, status, onDelete, onS
               <td>{formatDate(booking.checkIn)}</td>
               <td>{formatDate(booking.checkOut)}</td>
               <td>{booking.amountOfPeople}</td>
-              <td>${booking.totalAmount}</td>
+              <td>{formatCurrency(booking.totalAmount)}</td>
               <td>
                 <span className={`booking-status-badge ${booking.status || "pending"}`}>
                   {formatBookingStatus(booking.status)}

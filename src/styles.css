@@ -168,6 +168,10 @@
     @apply grid grid-cols-[minmax(260px,360px)_minmax(0,1fr)] items-start gap-6;
   }
 
+  .resource-user-layout {
+    @apply grid gap-6;
+  }
+
   .booking-home-grid {
     @apply grid grid-cols-[minmax(280px,420px)_minmax(0,1fr)] items-start gap-6;
   }
@@ -260,6 +264,15 @@
   }
 
   .editing-row td {
+    @apply bg-gold/10;
+  }
+
+  .clickable-row {
+    @apply cursor-pointer transition;
+  }
+
+  .clickable-row:hover td,
+  .clickable-row:focus td {
     @apply bg-gold/10;
   }
 
@@ -456,8 +469,7 @@
   }
 
   .public-strip article,
-  .quick-card,
-  .readonly-panel {
+  .quick-card {
     @apply border border-gold/25 bg-[#fbf7ef] shadow-soft;
   }
 
@@ -472,17 +484,12 @@
   }
 
   .public-strip span,
-  .quick-card span,
-  .readonly-panel p {
+  .quick-card span {
     @apply text-sm leading-relaxed text-muted;
   }
 
   .quick-grid {
     @apply p-0;
-  }
-
-  .readonly-panel {
-    @apply grid gap-2 p-6;
   }
 
   .public-cabins-section {
@@ -1089,8 +1096,7 @@
   .admin-shell .stat-card,
   .admin-shell .panel,
   .admin-shell .table-wrap,
-  .admin-shell .booking-filters,
-  .admin-shell .readonly-panel {
+  .admin-shell .booking-filters {
     @apply rounded-none border border-forest-800/10 bg-white/50 shadow-none;
     backdrop-filter: blur(8px);
   }

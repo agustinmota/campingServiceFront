@@ -34,6 +34,7 @@ The application supports:
 - Availability search by dates, type, and guests.
 - User registration and login.
 - Authenticated booking creation.
+- Authenticated cabin and campsite rows can be clicked to start a booking.
 - User booking history.
 - Admin dashboard and analytics.
 - Admin booking status management.
@@ -47,6 +48,7 @@ The application supports:
 - Full home page inspired by a hospitality/lake retreat brand.
 - Transparent top navbar behavior on scroll.
 - Accommodation cards with images, descriptions, capacity, and prices.
+- Prices are displayed with an explicit `USD` currency prefix.
 - Availability search with:
   - Check-in
   - Check-out
@@ -60,6 +62,7 @@ The application supports:
 ### Reservation Flow
 
 - Users can select a cabin or campsite from the home page.
+- Users can also select cabins or campsites from `/app/cabins` and `/app/campsites`.
 - If logged in, the user is sent directly to the reservation form.
 - If not logged in, protected routing sends the user to login first.
 - The reservation form sends holder data:
@@ -157,8 +160,8 @@ Shared frontend logic lives in `src/shared`:
 | --- | --- |
 | `/app` | Role-aware redirect |
 | `/app/reserve/:type/:id` | Reservation form |
-| `/app/cabins` | Cabin list/management view |
-| `/app/campsites` | Campsite list/management view |
+| `/app/cabins` | Cabin list for users and cabin management for admins |
+| `/app/campsites` | Campsite list for users and campsite management for admins |
 
 ### Admin Routes
 
@@ -294,6 +297,7 @@ Current test coverage includes:
 
 - Auth token persistence and expired-session cleanup.
 - Date parsing, date keys, normalization, and month/day comparison.
+- USD currency formatting.
 - Accommodation mapping for public and admin views.
 - Booking filters by status, holder, accommodation, and date.
 - Booking table rendering, status updates, delete action, and empty states.
@@ -301,7 +305,7 @@ Current test coverage includes:
 Current result:
 
 ```text
-13 passing tests
+14 passing tests
 ```
 
 Important bug caught by tests:

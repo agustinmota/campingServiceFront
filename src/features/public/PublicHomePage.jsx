@@ -6,6 +6,7 @@ import { logout, selectAuthToken, selectAuthUser } from "../auth/authSlice";
 import { apiRequest } from "../../services/api";
 import { buildPublicAccommodations, mapPublicCabins, mapPublicCampsites } from "../../shared/accommodationUtils";
 import { formatBookingStatus } from "../../shared/bookingStatus";
+import { formatCurrency } from "../../shared/currencyUtils";
 import { formatDate } from "../../shared/dateUtils";
 
 export function PublicHomePage() {
@@ -269,7 +270,7 @@ export function PublicHomePage() {
                 <strong>{accommodation.typeLabel} {accommodation.identifier}</strong>
                 <p>{accommodation.description}</p>
                 <span>{accommodation.maxCapacity} guests</span>
-                <span>${accommodation.price} {accommodation.priceLabel}</span>
+                <span>{formatCurrency(accommodation.price)} {accommodation.priceLabel}</span>
               </div>
             </Link>
           ))}
@@ -366,7 +367,7 @@ export function PublicHomePage() {
                     <td>{formatDate(booking.checkIn)}</td>
                     <td>{formatDate(booking.checkOut)}</td>
                     <td>{booking.amountOfPeople}</td>
-                    <td>${booking.totalAmount}</td>
+                    <td>{formatCurrency(booking.totalAmount)}</td>
                     <td>
                       <span className={`booking-status-badge ${booking.status || "pending"}`}>
                         {formatBookingStatus(booking.status)}

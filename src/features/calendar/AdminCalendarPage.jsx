@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchResource } from "../resources/resourceSlice";
 import { buildAdminAccommodations } from "../../shared/accommodationUtils";
 import { blockingStatuses, occupiedStatuses, reservedStatuses } from "../../shared/bookingStatus";
+import { formatCurrency } from "../../shared/currencyUtils";
 import { getDateKey, isSameDay, normalizeDate } from "../../shared/dateUtils";
 
 const weekdayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -232,7 +233,7 @@ export function AdminCalendarPage() {
                 >
                   <div>
                     <strong>{accommodation.type} {accommodation.identifier}</strong>
-                    <span>{accommodation.maxCapacity} guests - ${accommodation.price} {accommodation.rateLabel}</span>
+                    <span>{accommodation.maxCapacity} guests - {formatCurrency(accommodation.price)} {accommodation.rateLabel}</span>
                   </div>
                   <small className={`accommodation-status ${accommodationStatus}`}>
                     {accommodationStatus === "occupied" ? "Occupied" : "Available"}

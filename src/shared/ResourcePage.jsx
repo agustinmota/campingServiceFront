@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Pencil, Plus, RefreshCw, Save, Trash2, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createResource, deleteResource, fetchResource, updateResource } from "../features/resources/resourceSlice";
 
 function fileToImageDataUrl(file) {
@@ -30,8 +31,9 @@ function fileToImageDataUrl(file) {
   });
 }
 
-export function ResourcePage({ resource, title, description, columns, fields, emptyText, canManage = true }) {
+export function ResourcePage({ resource, title, description, columns, fields, emptyText, canManage = true, getItemHref }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const items = useSelector((state) => state.resources[resource]);
   const status = useSelector((state) => state.resources.status[resource] || "idle");
   const error = useSelector((state) => state.resources.errors[resource]);
@@ -103,6 +105,19 @@ export function ResourcePage({ resource, title, description, columns, fields, em
     }
   };
 
+  const goToItem = (item) => {
+    if (!canManage && getItemHref) {
+      navigate(getItemHref(item));
+    }
+  };
+
+  const handleItemKeyDown = (event, item) => {
+    if (!canManage && getItemHref && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      goToItem(item);
+    }
+  };
+
   return (
     <section className="page">
       <div className="page-header">
@@ -115,7 +130,7 @@ export function ResourcePage({ resource, title, description, columns, fields, em
         </button>
       </div>
 
-      <div className="work-grid">
+      <div className={canManage ? "work-grid" : "resource-user-layout"}>
         {canManage ? (
           <form className="panel form compact-form" onSubmit={handleSubmit}>
             <h2>New record</h2>
@@ -151,12 +166,7 @@ export function ResourcePage({ resource, title, description, columns, fields, em
               Create
             </button>
           </form>
-        ) : (
-          <aside className="panel readonly-panel">
-            <h2>User view</h2>
-            <p>Your account can browse available accommodations. Creating, deleting, and editing records is reserved for administrators.</p>
-          </aside>
-        )}
+        ) : null}
 
         <div className="table-wrap">
           {editingId ? (
@@ -216,8 +226,18 @@ export function ResourcePage({ resource, title, description, columns, fields, em
               </tr>
             </thead>
             <tbody>
-              {items.map((item) => (
-                <tr className={editingId === item.id ? "editing-row" : ""} key={item.id}>
+              {items.map((item) => {
+                const isClickable = !canManage && Boolean(getItemHref);
+                return (
+                <tr
+                  className={`${editingId === item.id ? "editing-row" : ""} ${isClickable ? "clickable-row" : ""}`}
+                  key={item.id}
+                  role={isClickable ? "link" : undefined}
+                  tabIndex={isClickable ? 0 : undefined}
+                  title={isClickable ? "Book this accommodation" : undefined}
+                  onClick={() => goToItem(item)}
+                  onKeyDown={(event) => handleItemKeyDown(event, item)}
+                >
                   {columns.map((column) => (
                     <td key={column.key}>{column.render ? column.render(item) : item[column.key]}</td>
                   ))}
@@ -242,7 +262,8 @@ export function ResourcePage({ resource, title, description, columns, fields, em
                     </td>
                   ) : null}
                 </tr>
-              ))}
+              );
+              })}
             </tbody>
           </table>
 

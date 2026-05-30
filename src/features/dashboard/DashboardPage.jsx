@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchResource } from "../resources/resourceSlice";
 import { buildAdminAccommodations } from "../../shared/accommodationUtils";
 import { bookingStatuses, formatBookingStatus } from "../../shared/bookingStatus";
+import { formatCurrency } from "../../shared/currencyUtils";
 import { formatDate, isSameMonth, normalizeDate } from "../../shared/dateUtils";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -93,7 +94,7 @@ export function DashboardPage() {
         <article className="stat-card">
           <CircleDollarSign size={24} />
           <span>Monthly revenue</span>
-          <strong>${monthlyRevenue}</strong>
+          <strong>{formatCurrency(monthlyRevenue)}</strong>
         </article>
       </div>
 
@@ -127,7 +128,7 @@ export function DashboardPage() {
           <div className="analytics-card-head">
             <div>
               <span>Total projected revenue</span>
-              <strong>${totalRevenue}</strong>
+              <strong>{formatCurrency(totalRevenue)}</strong>
             </div>
             <CircleDollarSign size={22} />
           </div>
@@ -168,7 +169,7 @@ export function DashboardPage() {
                   <span>{item.bookings} bookings</span>
                 </div>
                 <div>
-                  <strong>${item.revenue}</strong>
+                  <strong>{formatCurrency(item.revenue)}</strong>
                   <span>projected revenue</span>
                 </div>
               </div>
@@ -192,7 +193,7 @@ export function DashboardPage() {
                 </div>
                 <div>
                   <strong>{getAccommodationLabel(booking)}</strong>
-                  <span>${booking.totalAmount} - {formatBookingStatus(booking.status)}</span>
+                  <span>{formatCurrency(booking.totalAmount)} - {formatBookingStatus(booking.status)}</span>
                 </div>
               </div>
             ))}
@@ -212,7 +213,7 @@ export function DashboardPage() {
                   <span>{item.maxCapacity} guests</span>
                 </div>
                 <div>
-                  <strong>${item.price}</strong>
+                  <strong>{formatCurrency(item.price)}</strong>
                   <span>{item.rateLabel}</span>
                 </div>
               </div>

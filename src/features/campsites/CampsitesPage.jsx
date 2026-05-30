@@ -1,6 +1,7 @@
 import { ResourcePage } from "../../shared/ResourcePage";
 import { useSelector } from "react-redux";
 import { selectAuthUser } from "../auth/authSlice";
+import { formatCurrency } from "../../shared/currencyUtils";
 
 export function CampsitesPage() {
   const user = useSelector(selectAuthUser);
@@ -22,16 +23,17 @@ export function CampsitesPage() {
         { key: "identifier", label: "Identifier" },
         { key: "description", label: "Description" },
         { key: "maxCapacity", label: "Capacity" },
-        { key: "pricePerPerson", label: "Price/person", render: (item) => `$${item.pricePerPerson}` }
+        { key: "pricePerPerson", label: "Price/person", render: (item) => formatCurrency(item.pricePerPerson) }
       ]}
       fields={[
         { name: "identifier", label: "Identifier" },
         { name: "description", label: "Description" },
         { name: "maxCapacity", label: "Maximum capacity", type: "number", min: 1 },
-        { name: "pricePerPerson", label: "Price per person", type: "number", min: 0 },
+        { name: "pricePerPerson", label: "Price per person (USD)", type: "number", min: 0 },
         { name: "imageUrl", label: "Photo", type: "file", accept: "image/*" }
       ]}
       canManage={user?.role === "admin"}
+      getItemHref={(item) => `/app/reserve/campsite/${item.id}`}
     />
   );
 }
