@@ -971,25 +971,29 @@
   }
 
   .admin-shell {
-    @apply grid-cols-[240px_minmax(0,1fr)] bg-cream;
+    @apply grid-cols-[256px_minmax(0,1fr)] bg-cream;
     background:
-      radial-gradient(circle at 85% 8%, rgba(184, 147, 63, 0.12), transparent 28rem),
-      linear-gradient(180deg, #ede7dc 0%, #f2ede4 100%);
+      linear-gradient(180deg, rgba(247, 242, 233, 0.94), rgba(237, 231, 220, 0.98)),
+      url("/img/background.jpg") center/cover fixed;
   }
 
   .admin-shell .sidebar {
     @apply sticky top-0 h-screen gap-0 bg-forest-800 p-0;
-    background: #14301f;
-    box-shadow: none;
+    background:
+      linear-gradient(180deg, rgba(14, 28, 19, 0.92), rgba(14, 28, 19, 0.98)),
+      url("/img/background.jpg") center/cover;
+    box-shadow: 22px 0 70px rgba(14, 28, 19, 0.24);
     border-right: 1px solid rgba(184, 147, 63, 0.12);
   }
 
   .admin-shell .brand {
     @apply gap-4 border-b border-gold/15 px-6 py-7;
+    background: linear-gradient(180deg, rgba(237, 231, 220, 0.08), rgba(237, 231, 220, 0));
   }
 
   .admin-shell .brand-logo {
-    @apply h-12 w-12 rounded-none border-0 bg-transparent p-0 shadow-none;
+    @apply h-12 w-12 rounded-none border border-gold/50 bg-parch/95 p-1;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
   }
 
   .admin-shell .brand span {
@@ -1005,23 +1009,24 @@
   }
 
   .admin-shell .nav {
-    @apply flex-1 content-start gap-0 overflow-y-auto py-5;
+    @apply flex-1 content-start gap-1 overflow-y-auto px-3 py-5;
   }
 
   .admin-nav-label {
-    @apply px-6 pb-2 pt-3 text-[0.5rem] font-bold uppercase tracking-[0.3em] text-gold/45;
+    @apply px-3 pb-2 pt-3 text-[0.5rem] font-bold uppercase tracking-[0.3em] text-gold/55;
   }
 
   .admin-shell .nav a {
-    @apply min-h-0 justify-start gap-3 border-0 border-l-2 border-l-transparent px-6 py-3 text-[0.68rem] font-semibold uppercase tracking-[0.1em] text-parch/45;
+    @apply min-h-0 justify-start gap-3 border border-transparent px-3.5 py-3 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-parch/55;
   }
 
   .admin-shell .nav a:hover {
-    @apply border-l-gold/50 bg-parch/5 text-parch/80;
+    @apply border-gold/25 bg-parch/10 text-parch;
   }
 
   .admin-shell .nav a.active {
-    @apply border-l-gold bg-gold/10 text-gilded;
+    @apply border-gold/45 bg-gold/15 text-gilded;
+    box-shadow: inset 3px 0 0 #b8933f;
   }
 
   .admin-shell .nav a svg {
@@ -1029,7 +1034,7 @@
   }
 
   .sidebar-footer-panel {
-    @apply mt-auto grid gap-4 border-t border-gold/15 p-5;
+    @apply mt-auto grid gap-4 border-t border-gold/15 bg-forest-900/35 p-5;
   }
 
   .sidebar-user {
@@ -1049,7 +1054,7 @@
   }
 
   .admin-shell .ghost-button {
-    @apply mt-0 min-h-0 justify-start border border-gold/20 bg-transparent px-3 py-2.5 text-[0.62rem] text-parch/55 hover:border-gold hover:bg-gold/10 hover:text-gilded;
+    @apply mt-0 min-h-0 justify-start border border-gold/25 bg-parch/5 px-3 py-3 text-[0.62rem] text-parch/65 hover:border-gold hover:bg-gold/15 hover:text-gilded;
   }
 
   .admin-shell .content {
@@ -1057,8 +1062,9 @@
   }
 
   .admin-topbar {
-    @apply sticky top-0 z-20 flex h-16 items-center justify-between border-b border-forest-800/10 bg-parch/75 px-9;
-    backdrop-filter: blur(14px);
+    @apply sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gold/20 bg-[#f8f3ea]/80 px-9;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 12px 34px rgba(14, 28, 19, 0.06);
   }
 
   .admin-topbar > div {
@@ -1074,7 +1080,7 @@
   }
 
   .admin-topbar a {
-    @apply text-[0.62rem] font-bold uppercase tracking-[0.16em] text-gold no-underline transition hover:text-gilded;
+    @apply border border-gold/35 px-3 py-2 text-[0.62rem] font-bold uppercase tracking-[0.16em] text-forest-800 no-underline transition hover:border-gold hover:bg-gold/15 hover:text-forest-900;
   }
 
   .admin-shell .page {
@@ -1082,28 +1088,48 @@
   }
 
   .admin-shell .page-header {
-    @apply items-end border-0 pb-0;
+    @apply relative min-h-36 items-end overflow-hidden border border-gold/20 p-7;
+    background:
+      linear-gradient(90deg, rgba(14, 28, 19, 0.92), rgba(20, 48, 31, 0.68), rgba(184, 147, 63, 0.22)),
+      url("/img/background.jpg") center/cover;
+    box-shadow: 0 24px 70px rgba(14, 28, 19, 0.14);
+  }
+
+  .admin-shell .page-header::after {
+    @apply pointer-events-none absolute inset-x-0 bottom-0 h-px content-[''];
+    background: linear-gradient(90deg, transparent, #d4aa5a, transparent);
+  }
+
+  .admin-shell .page-header > div,
+  .admin-shell .page-header > button {
+    @apply relative z-10;
   }
 
   .admin-shell .page-header h1 {
-    @apply font-serif text-[1.9rem] font-normal leading-tight text-forest-800;
+    @apply font-display text-[2.55rem] font-normal leading-tight text-cream;
   }
 
   .admin-shell .page-header p {
-    @apply mt-2 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-muted;
+    @apply mt-2 max-w-2xl text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-cream/65;
+  }
+
+  .admin-shell .page-header .icon-button {
+    @apply border-gold/35 bg-cream/10 text-cream hover:bg-gold hover:text-forest-900;
   }
 
   .admin-shell .stat-card,
   .admin-shell .panel,
   .admin-shell .table-wrap,
   .admin-shell .booking-filters {
-    @apply rounded-none border border-forest-800/10 bg-white/50 shadow-none;
-    backdrop-filter: blur(8px);
+    @apply rounded-sm border border-forest-800/10 bg-[#fffaf2]/75 shadow-none;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 44px rgba(14, 28, 19, 0.08);
   }
 
   .admin-shell .stat-card {
-    @apply relative overflow-hidden p-6 transition hover:border-gold/40;
-    background: rgba(255, 255, 255, 0.48);
+    @apply relative overflow-hidden p-6 transition hover:-translate-y-0.5 hover:border-gold/45;
+    background:
+      linear-gradient(180deg, rgba(255, 250, 242, 0.9), rgba(239, 229, 214, 0.74));
   }
 
   .admin-shell .stat-card::after {
@@ -1148,6 +1174,8 @@
 
   .admin-shell .compact-form {
     @apply p-7;
+    background:
+      linear-gradient(180deg, rgba(255, 250, 242, 0.9), rgba(239, 229, 214, 0.72));
   }
 
   .admin-shell .form h2 {
@@ -1170,12 +1198,12 @@
   }
 
   .admin-shell .primary-button {
-    @apply rounded-sm bg-forest-800 px-5 py-3 text-[0.68rem] text-parch hover:bg-forest-700;
+    @apply rounded-sm bg-forest-800 px-5 py-3 text-[0.68rem] text-parch shadow-sm hover:bg-forest-700;
   }
 
   .admin-shell .secondary-button,
   .admin-shell .icon-button {
-    @apply rounded-sm border border-forest-800/10 bg-transparent text-forest-800 hover:border-gold hover:bg-gold/10;
+    @apply rounded-sm border border-forest-800/10 bg-[#fffaf2]/60 text-forest-800 hover:border-gold hover:bg-gold/15;
   }
 
   .admin-shell .icon-button.danger {
@@ -1203,7 +1231,7 @@
   }
 
   .admin-shell th {
-    @apply border-b border-forest-800/10 bg-transparent px-5 py-3 text-[0.5rem] font-bold uppercase tracking-[0.24em] text-muted;
+    @apply border-b border-forest-800/10 bg-forest-800/[0.035] px-5 py-3 text-[0.5rem] font-bold uppercase tracking-[0.24em] text-muted;
   }
 
   .admin-shell td {
@@ -1211,7 +1239,7 @@
   }
 
   .admin-shell tr:hover td {
-    @apply bg-forest-800/[0.02];
+    @apply bg-gold/[0.055];
   }
 
   .admin-shell .resource-thumb {
@@ -1227,12 +1255,13 @@
   }
 
   .admin-card {
-    @apply overflow-hidden rounded-none border border-forest-800/10 bg-white/50 shadow-none;
-    backdrop-filter: blur(8px);
+    @apply overflow-hidden rounded-sm border border-forest-800/10 bg-[#fffaf2]/75 shadow-none;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 44px rgba(14, 28, 19, 0.08);
   }
 
   .admin-card-head {
-    @apply flex items-center justify-between border-b border-forest-800/10 px-6 py-4;
+    @apply flex items-center justify-between border-b border-gold/20 bg-forest-800/[0.035] px-6 py-4;
   }
 
   .admin-card-head span {
@@ -1248,12 +1277,16 @@
   }
 
   .analytics-card {
-    @apply overflow-hidden border border-forest-800/10 bg-white/50 p-6 shadow-none;
-    backdrop-filter: blur(8px);
+    @apply overflow-hidden rounded-sm border border-forest-800/10 bg-[#fffaf2]/75 p-6 shadow-none;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 44px rgba(14, 28, 19, 0.08);
   }
 
   .analytics-card.featured {
     @apply bg-forest-800 text-parch;
+    background:
+      linear-gradient(135deg, rgba(14, 28, 19, 0.96), rgba(20, 48, 31, 0.94)),
+      url("/img/background.jpg") center/cover;
   }
 
   .analytics-card-head {
@@ -1366,8 +1399,9 @@
   }
 
   .admin-calendar-panel {
-    @apply overflow-hidden border border-forest-800/10 bg-white/50;
-    backdrop-filter: blur(8px);
+    @apply overflow-hidden rounded-sm border border-forest-800/10 bg-[#fffaf2]/75;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 44px rgba(14, 28, 19, 0.08);
   }
 
   .admin-calendar-layout {
@@ -1375,8 +1409,9 @@
   }
 
   .admin-accommodation-list {
-    @apply overflow-hidden border border-forest-800/10 bg-white/50;
-    backdrop-filter: blur(8px);
+    @apply overflow-hidden rounded-sm border border-forest-800/10 bg-[#fffaf2]/75;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 44px rgba(14, 28, 19, 0.08);
   }
 
   .admin-accommodation-items {
@@ -1384,7 +1419,7 @@
   }
 
   .admin-accommodation-item {
-    @apply grid w-full grid-cols-1 gap-2 border-b border-forest-800/5 bg-transparent px-4 py-3 text-left transition hover:bg-forest-800/[0.03];
+    @apply grid w-full grid-cols-1 gap-2 border-b border-forest-800/5 bg-transparent px-4 py-3 text-left transition hover:bg-gold/[0.07];
   }
 
   .admin-accommodation-item:last-child {
@@ -1392,7 +1427,8 @@
   }
 
   .admin-accommodation-item.active {
-    @apply bg-gold/10;
+    @apply bg-gold/15;
+    box-shadow: inset 3px 0 0 #b8933f;
   }
 
   .admin-accommodation-item strong {
@@ -1416,7 +1452,7 @@
   }
 
   .admin-calendar-head {
-    @apply flex items-center justify-between border-b border-forest-800/10 px-5 py-3;
+    @apply flex items-center justify-between border-b border-gold/20 bg-forest-800/[0.035] px-5 py-3;
   }
 
   .admin-calendar-head strong {
@@ -1480,15 +1516,15 @@
   }
 
   .admin-calendar-day.available {
-    @apply bg-white/70;
+    @apply bg-white/75;
   }
 
   .admin-calendar-day.reserved {
-    @apply bg-gold/20;
+    @apply bg-gold/25;
   }
 
   .admin-calendar-day.occupied {
-    @apply bg-[#5f1f1f]/15;
+    @apply bg-[#5f1f1f]/20;
   }
 
   .admin-calendar-day[role="button"] {
@@ -1520,7 +1556,7 @@
   }
 
   .admin-shell .admin-calendar-page .page-header {
-    @apply pb-0;
+    @apply min-h-28 p-5;
   }
 
   .admin-shell .admin-calendar-page .page-header h1 {

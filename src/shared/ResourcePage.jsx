@@ -3,6 +3,7 @@ import { Pencil, Plus, RefreshCw, Save, Trash2, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createResource, deleteResource, fetchResource, updateResource } from "../features/resources/resourceSlice";
+import { confirmDelete } from "./confirmDelete";
 
 function fileToImageDataUrl(file) {
   return new Promise((resolve, reject) => {
@@ -115,6 +116,12 @@ export function ResourcePage({ resource, title, description, columns, fields, em
     if (!canManage && getItemHref && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
       goToItem(item);
+    }
+  };
+
+  const handleDelete = (item) => {
+    if (confirmDelete(resource === "cabins" ? "cabin" : "campsite")) {
+      dispatch(deleteResource({ resource, id: item.id }));
     }
   };
 
@@ -255,7 +262,7 @@ export function ResourcePage({ resource, title, description, columns, fields, em
                         className="icon-button danger"
                         type="button"
                         title="Delete"
-                        onClick={() => dispatch(deleteResource({ resource, id: item.id }))}
+                        onClick={() => handleDelete(item)}
                       >
                         <Trash2 size={17} />
                       </button>

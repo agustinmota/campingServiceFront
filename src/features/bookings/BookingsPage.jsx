@@ -7,6 +7,7 @@ import { filterBookings, initialBookingFilters, initialBookingForm } from "./boo
 import { BookingFilters } from "./components/BookingFilters";
 import { BookingForm } from "./components/BookingForm";
 import { BookingTable } from "./components/BookingTable";
+import { confirmDelete } from "../../shared/confirmDelete";
 
 export function BookingsPage() {
   const dispatch = useDispatch();
@@ -53,6 +54,12 @@ export function BookingsPage() {
     }
   };
 
+  const handleDeleteBooking = (id) => {
+    if (confirmDelete("booking")) {
+      dispatch(deleteResource({ resource: "bookings", id }));
+    }
+  };
+
   return (
     <section className="page">
       <div className="page-header">
@@ -74,7 +81,7 @@ export function BookingsPage() {
             allBookingsCount={bookings.length}
             bookings={filteredBookings}
             status={status}
-            onDelete={(id) => dispatch(deleteResource({ resource: "bookings", id }))}
+            onDelete={handleDeleteBooking}
             onStatusChange={(id, nextStatus) => dispatch(updateBookingStatus({ id, status: nextStatus }))}
           />
         </div>
