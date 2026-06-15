@@ -16,6 +16,7 @@ Frontend repository: [campingServiceFront](https://github.com/agustinmota/campin
 - [Authentication and Roles](#authentication-and-roles)
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
+- [Railway Deployment](#railway-deployment)
 - [Available Scripts](#available-scripts)
 - [Testing](#testing)
 - [Project Structure](#project-structure)
@@ -241,6 +242,49 @@ http://localhost:5173
 | --- | --- | --- |
 | `VITE_API_URL` | No | Backend API URL. Defaults to `http://localhost:3000`. |
 
+## Railway Deployment
+
+The frontend is deployed as a separate Railway service from the backend.
+
+Production frontend URL:
+
+```text
+https://campingservicefront-production.up.railway.app
+```
+
+Production backend URL consumed by the frontend:
+
+```text
+https://campingservice-production.up.railway.app
+```
+
+Railway frontend variable:
+
+```env
+VITE_API_URL=https://campingservice-production.up.railway.app
+```
+
+Important:
+
+- `VITE_API_URL` must include `https://`.
+- Do not set `VITE_API_URL` to the frontend domain.
+- Do not include route paths such as `/tokens/login` or `/user/create` in `VITE_API_URL`.
+- After changing `VITE_API_URL`, redeploy the frontend because Vite injects environment variables at build time.
+
+Railway build command:
+
+```bash
+npm run build
+```
+
+Railway start command:
+
+```bash
+npm start
+```
+
+The production start script serves the `dist` folder with SPA fallback support, so routes such as `/login` work when refreshed directly in the browser.
+
 ## Available Scripts
 
 ### Development
@@ -266,6 +310,14 @@ npm run preview
 ```
 
 Serves the production build locally.
+
+### Production Start
+
+```bash
+npm start
+```
+
+Serves the built `dist` folder with `serve` and React Router fallback support. This is the recommended start command for Railway.
 
 ### Tests
 
@@ -305,7 +357,7 @@ Current test coverage includes:
 Current result:
 
 ```text
-14 passing tests
+15 passing tests
 ```
 
 Important bug caught by tests:
