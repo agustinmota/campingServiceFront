@@ -416,6 +416,34 @@
     @apply text-4xl;
   }
 
+  .admin-credentials {
+    @apply mb-5 border border-gold/35 bg-forest-800/5 p-4;
+  }
+
+  .admin-credentials-heading {
+    @apply mb-3 flex items-center gap-2 text-gold;
+  }
+
+  .admin-credentials-heading h2 {
+    @apply font-sans text-xs font-extrabold uppercase tracking-[0.14em] text-forest-800;
+  }
+
+  .admin-credentials dl {
+    @apply grid gap-2;
+  }
+
+  .admin-credentials dl div {
+    @apply flex items-center justify-between gap-4;
+  }
+
+  .admin-credentials dt {
+    @apply text-xs font-bold uppercase tracking-[0.12em] text-muted;
+  }
+
+  .admin-credentials dd {
+    @apply m-0 font-mono text-sm font-semibold text-forest-900;
+  }
+
   .public-page {
     @apply min-h-screen bg-parch;
   }

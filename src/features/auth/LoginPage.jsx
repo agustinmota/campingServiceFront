@@ -60,6 +60,23 @@ export function LoginPage() {
           </div>
         </div>
 
+        <aside className="admin-credentials" aria-label="Administrator demo credentials">
+          <div className="admin-credentials-heading">
+            <ShieldCheck size={19} />
+            <h2>Admin demo access</h2>
+          </div>
+          <dl>
+            <div>
+              <dt>Email</dt>
+              <dd>admin@e.com</dd>
+            </div>
+            <div>
+              <dt>Password</dt>
+              <dd>1234</dd>
+            </div>
+          </dl>
+        </aside>
+
         <form className="form" onSubmit={handleSubmit}>
           <label>
             Email
